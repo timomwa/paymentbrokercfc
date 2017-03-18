@@ -262,6 +262,13 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/org.apache.axis/axis -->
+		<dependency>
+		    <groupId>org.apache.axis</groupId>
+		    <artifactId>axis</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		
 			
 	
 

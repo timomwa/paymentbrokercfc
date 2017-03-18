@@ -1,6 +1,7 @@
-package ug.or.nda.ejb;
+package ug.or.nda.scheduler;
 
 import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
 
 import org.apache.log4j.Logger;
@@ -9,8 +10,8 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-//import org.jboss.ejb3.annotation.ResourceAdapter;
-//import org.jboss.webbeans.ejb.InternalEjbDescriptor;
+import ug.or.nda.ejb.PaymentNotificationEJBI;
+
 
 @MessageDriven
 (activationConfig =
@@ -20,10 +21,19 @@ public class PaymentForwardJob  implements Job {
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
+	@EJB
+	private PaymentNotificationEJBI paymentNotificationEJB;
+	
 	@Override
-	public void execute(JobExecutionContext arg0) throws JobExecutionException {
+	public void execute(JobExecutionContext jobexecution) throws JobExecutionException {
 		
-		System.out.println("\n\n**** 5 sec ? ******\n\n");
+		try{
+			paymentNotificationEJB.pushPayments();
+			logger.info("\n**** 5 sec ? ******\n");
+			
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
 		
 	}
 

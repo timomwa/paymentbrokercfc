@@ -10,13 +10,13 @@ public class InvoiceValidationResponseDTO implements Serializable {
 	private static final long serialVersionUID = -8582351670605528433L;
 	
 	private InvoiceDTO invoice;
-	private String statusCode;
+	private Integer statusCode;
 	private String statusMessage;
 	
-	public String getStatusCode() {
+	public Integer getStatusCode() {
 		return statusCode;
 	}
-	public void setStatusCode(String statusCode) {
+	public void setStatusCode(Integer statusCode) {
 		this.statusCode = statusCode;
 	}
 	public String getStatusMessage() {

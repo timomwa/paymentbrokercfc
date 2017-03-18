@@ -13,7 +13,7 @@ import ug.or.nda.ejb.PaymentNotificationEJBI;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 
 @WebService(name="paymentService" , targetNamespace="http://services.nda.or.ug")
-@WebContext(contextRoot = "/broker", urlPattern="/")
+@WebContext(contextRoot = "/broker", urlPattern="/invoice/payment/v1.0")
 @Stateless
 public class PaymentService {
 	

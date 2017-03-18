@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -48,6 +50,7 @@ public class PaymentNotification extends AbstractEntity {
 	private String systemID;
 	
 	@Column(name="status")
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	
 	

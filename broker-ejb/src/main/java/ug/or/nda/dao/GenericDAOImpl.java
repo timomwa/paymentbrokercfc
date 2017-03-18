@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.ManagedBean;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
@@ -18,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import ug.or.nda.constant.AppPropertyHolder;
 
+@ManagedBean
 public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAOI<T, ID> {
 	private final Class<T> persistentClass;
 	
