@@ -117,9 +117,9 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		try{
 			
 			List<Status> statuses = Arrays.asList( Status.FAILED_TEMPORARILY, Status.JUST_IN );
-			Query qry = em.createQuery("from PaymentNotification WHERE status in (:statuses)  ORDER BY id desc");
+			Query qry = em.createQuery("from PaymentNotification WHERE status in (:statuses) AND earliestRetryTime <= :earliestRetryTime ORDER BY earliestRetryTime desc");
 			qry.setParameter("statuses", statuses);
-			//qry.setParameter("earliestRetryTime", new Date());
+			qry.setParameter("earliestRetryTime", new Date());
 			qry.setMaxResults(limit);
 			payments = qry.getResultList();
 			
