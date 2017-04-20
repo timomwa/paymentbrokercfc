@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+	 <!--context-param>
+		<param-name>quartz:shutdown-on-unload</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>quartz:wait-on-shutdown</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>quartz:start-on-load</param-name>
+		<param-value>false</param-value>
+	</context-param-->
+
+	<!--listener>
+		<listener-class>org.quartz.ee.servlet.QuartzInitializerListener</listener-class>
+	</listener-->
+     
+	<!--listener>
+		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+	</listener>
+
+	<servlet>
+		<display-name>testWS</display-name>
+		<servlet-name>testWS</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>testWS</servlet-name>
+		<url-pattern>/testWS</url-pattern>
+	</servlet-mapping-->
+	
+	
+	
+	<!--servlet>
+		<display-name>invoiceService</display-name>
+		<servlet-name>invoiceService</servlet-name>
+		<servlet-class>ug.or.nda.service.InvoiceService</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>invoiceService</servlet-name>
+		<url-pattern>/invoiceService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<display-name>paymentService</display-name>
+		<servlet-name>paymentService</servlet-name>
+		<servlet-class>ug.or.nda.service.PaymentService</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>paymentService</servlet-name>
+		<url-pattern>/paymentService</url-pattern>
+	</servlet-mapping-->
+	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<!--persistence-unit-ref>
+		<persistence-unit-ref-name>misrouter/misRouterPU</persistence-unit-ref-name>
+		<persistence-unit-name>misRouterPU</persistence-unit-name>
+	</persistence-unit-ref-->
+</web-app> 

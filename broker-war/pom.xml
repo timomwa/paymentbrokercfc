@@ -1,0 +1,246 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>broker-war</artifactId>
+	<packaging>war</packaging>
+
+
+	<properties>
+		<schema.location>${project.build.directory}/schemas</schema.location>
+	</properties>
+
+	<parent>
+		<groupId>ug.or.nda</groupId>
+		<artifactId>project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>ug.or.nda</groupId>
+			<artifactId>broker-ejb</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-rt</artifactId>
+			<version>2.1.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.sun.xml.messaging.saaj</groupId>
+					<artifactId>saaj-impl</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.soap</groupId>
+					<artifactId>saaj-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.ws</groupId>
+					<artifactId>jaxws-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.stream</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
+
+		<!-- http://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-tools -->
+		<!--dependency> <groupId>com.sun.xml.ws</groupId> <artifactId>jaxws-tools</artifactId> 
+			<version>2.1.3</version> </dependency -->
+
+
+	</dependencies>
+
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<!-- The JBoss AS plugin deploys your war to a local JBoss AS container -->
+			<!-- To use, run: mvn package jboss-as:deploy -->
+			<plugin>
+				<groupId>org.jboss.as.plugins</groupId>
+				<artifactId>jboss-as-maven-plugin</artifactId>
+				<version>7.3.Final</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<fork>true</fork>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+
+
+			<!--plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>unpack-dependencies</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<includes>**/*.xsd</includes>
+							<outputDirectory>${schema.location}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin-->
+
+			<!--plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>1.12</version>
+				<executions>
+					<execution>
+						<id>wsdla-exec</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>wsgen</goal>
+						</goals>
+						<configuration>
+							<target>2.1</target>
+							<sei>ug.or.nda.services.SanityCheck</sei>
+							<genWsdl>true</genWsdl>
+							<wsdlFiles>
+								<wsdlFile>SanityCheckService.wsdl</wsdlFile>
+							</wsdlFiles>
+							<bindingDirectory>${schema.location}</bindingDirectory>
+							<bindingFiles>
+								<bindingFile>SanityCheckService_schema1.xsd</bindingFile>
+							</bindingFiles>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wsdlb-exec</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<target>2.1</target>
+							<packageName>ug.or.nda.servicesgen</packageName>
+							<wsdlFiles>
+								<wsdlFile>SanityCheckService.wsdl</wsdlFile>
+							</wsdlFiles>
+							<bindingDirectory>${schema.location}</bindingDirectory>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wsdlc-exec</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>wsgen</goal>
+						</goals>
+						<configuration>
+							<target>2.1</target>
+							<sei>ug.or.nda.services.AuthenticationWebService</sei>
+							<genWsdl>true</genWsdl>
+							<wsdlFiles>
+								<wsdlFile>AuthenticationWebServiceService.wsdl</wsdlFile>
+							</wsdlFiles>
+							<bindingDirectory>${schema.location}</bindingDirectory>
+							<bindingFiles>
+								<bindingFile>AuthenticationWebServiceService_schema1.xsd</bindingFile>
+							</bindingFiles>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wsdle-exec</id>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+						<configuration>
+							<target>2.1</target>
+							<packageName>ug.or.nda.servicesgen2</packageName>
+							<wsdlFiles>
+								<wsdlFile>AuthenticationWebServiceService.wsdl</wsdlFile>
+							</wsdlFiles>
+							<bindingDirectory>${schema.location}</bindingDirectory>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+				</executions>
+
+				<configuration>
+					<sourceDestDir>src/main/java</sourceDestDir>
+				</configuration>
+
+				<dependencies>
+
+					<dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-tools</artifactId>
+						<version>2.1.3</version>
+					</dependency>
+
+					<dependency>
+						<groupId>javax.xml.ws</groupId>
+						<artifactId>jaxws-api</artifactId>
+						<version>2.0</version>
+					</dependency>
+
+					<http:/mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt>
+					<dependency> <groupId>com.sun.xml.ws</groupId> <artifactId>jaxws-rt</artifactId> 
+						<version>2.2.5</version> </dependency>
+
+					<http://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt>
+					<dependency> <groupId>com.sun.xml.ws</groupId> <artifactId>jaxws-rt</artifactId> 
+						<version>2.2.10</version> </dependency>
+
+
+
+					<dependency>
+						<groupId>javax.servlet</groupId>
+						<artifactId>servlet-api</artifactId>
+						<version>2.5</version>
+						<scope>provided</scope>
+					</dependency>
+					<dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-tools</artifactId>
+						<version>2.2.5</version>
+					</dependency>
+
+					<dependency>
+						<groupId>ug.or.nda</groupId>
+						<artifactId>broker-ejb</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+						<type>ejb</type>
+					</dependency>
+
+				</dependencies>
+			</plugin-->
+
+
+		</plugins>
+	</build>
+
+</project>
