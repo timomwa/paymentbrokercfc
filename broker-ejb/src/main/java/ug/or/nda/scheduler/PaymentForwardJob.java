@@ -29,7 +29,6 @@ public class PaymentForwardJob  implements Job {
 		
 		try{
 			paymentNotificationEJB.pushPayments();
-			logger.info("\n**** 5 sec ? ******\n");
 			
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
