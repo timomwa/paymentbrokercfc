@@ -38,7 +38,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		logger.info(request);
 		
 		URL wsdlLocation = null;
-		String endpoint = "http://localhost:8080/ndamisws/invoice/validation/v1.0";
+		String endpoint = "http://ndaendopoint:8080/ndamisws/invoice/validation/v1.0";
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {
@@ -66,7 +66,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		InvoiceDTO invoiceDTO = null;
 		
 		URL wsdlLocation = null;
-		String endpoint = "http://localhost:8080/ndamisws/invoice/validation/v1.0";
+		String endpoint = "http://ndaendopoint:8080/ndamisws/invoice/validation/v1.0";
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {
