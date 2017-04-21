@@ -43,7 +43,7 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	public void init(){
 		try{
 			URL wsdlLocation = null;
-			String endpoint = "http://localhost:8080/ndamisws/invoice/payment/v1.0";
+			String endpoint = "http://ndaendopoint/ndamisws/invoice/payment/v1.0";
 			try {
 				wsdlLocation = new URL(endpoint+"?wsdl");
 			} catch (MalformedURLException e1) {
