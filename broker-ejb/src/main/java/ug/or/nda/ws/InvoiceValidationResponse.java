@@ -111,13 +111,4 @@ public class InvoiceValidationResponse {
         this.statusMessage = value;
     }
 
-	@Override
-	public String toString() {
-		return "\n\nInvoiceValidationResponse [\n\t\tinvoice=" + invoice + ", \n\t\tstatusCode=" + statusCode
-				+ ", \n\t\tstatusMessage=" + statusMessage + "\n]\n\n";
-	}
-    
-    
-    
-
 }

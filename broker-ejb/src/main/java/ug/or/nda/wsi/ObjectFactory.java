@@ -26,7 +26,7 @@ public class ObjectFactory {
 
     private final static QName _ValidateInvoice_QNAME = new QName("http://wsi.nda.or.ug", "validateInvoice");
     private final static QName _ValidateInvoiceResponse_QNAME = new QName("http://wsi.nda.or.ug", "validateInvoiceResponse");
-    
+
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ug.or.nda.wsi
      * 

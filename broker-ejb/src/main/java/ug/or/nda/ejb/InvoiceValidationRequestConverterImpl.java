@@ -53,7 +53,7 @@ public class InvoiceValidationRequestConverterImpl implements InvoiceValidationR
 			invoiceDTO.setDueDate( invoice.getDueDate().toGregorianCalendar().getTime()  );
 			invoiceDTO.setInvoiceNo( invoice.getInvoiceNo() );
 			invoiceDTO.setReference1( invoice.getReference1() );
-			
+			invoiceDTO.setStatus( invoice.getStatus() );
 			response.setInvoice(invoiceDTO);
 			
 		}

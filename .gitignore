@@ -17,4 +17,6 @@ gradle-app.setting
 .classpath
 .project
 .settings/*
-
+broker-ear/target/*
+broker-ejb/target/*
+broker-war/target/*

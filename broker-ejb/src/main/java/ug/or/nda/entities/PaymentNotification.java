@@ -1,5 +1,6 @@
 package ug.or.nda.entities;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -78,12 +79,14 @@ public class PaymentNotification extends AbstractEntity {
 			status = Status.JUST_IN;
 		if(recTimeStamp==null)
 			recTimeStamp=new Date();
+		if(amount==null)
+			amount=0d;
 		
 	}
 	
 	
 	public Double getAmount() {
-		return amount;
+		return amount!=null ? amount: BigDecimal.ZERO.doubleValue();
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;

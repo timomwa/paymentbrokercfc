@@ -6,6 +6,9 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
 
+import ug.or.nda.wsi.InvoiceStatus;
+
+
 @XmlType(name="invoice", namespace="http://service.nda.or.ug")
 public class InvoiceDTO implements Serializable {
 
@@ -17,6 +20,7 @@ public class InvoiceDTO implements Serializable {
 	private String customerName;
 	private Date dueDate;
 	private String reference1;
+	private InvoiceStatus status;
 	
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -60,11 +64,18 @@ public class InvoiceDTO implements Serializable {
 	public void setReference1(String reference1) {
 		this.reference1 = reference1;
 	}
+	public InvoiceStatus getStatus() {
+		return status;
+	}
+	public void setStatus(InvoiceStatus status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
-		return "\n\nInvoice [\n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tdescription=" + description + ", \n\t\tamount="
+		return "\n\nInvoiceDTO [\n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tdescription=" + description + ", \n\t\tamount="
 				+ amount + ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\tcustomerName=" + customerName
-				+ ", \n\t\tdueDate=" + dueDate + ", \n\t\treference1=" + reference1 + "\n]\n\n";
+				+ ", \n\t\tdueDate=" + dueDate + ", \n\t\treference1=" + reference1 + ", \n\t\tstatus=" + status
+				+ "\n]\n\n";
 	}
 	
 	

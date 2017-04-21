@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
+import ug.or.nda.wsi.InvoiceStatus;
 
 
 /**
@@ -26,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="dueDate" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
  *         &lt;element name="invoiceNo" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="reference1" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="status" type="{http://wsi.nda.or.ug}invoiceStatus" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -42,7 +44,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "description",
     "dueDate",
     "invoiceNo",
-    "reference1"
+    "reference1",
+    "status"
 })
 public class Invoice {
 
@@ -54,6 +57,7 @@ public class Invoice {
     protected XMLGregorianCalendar dueDate;
     protected String invoiceNo;
     protected String reference1;
+    protected InvoiceStatus status;
 
     /**
      * Gets the value of the amount property.
@@ -223,13 +227,28 @@ public class Invoice {
         this.reference1 = value;
     }
 
-	@Override
-	public String toString() {
-		return "\n\nInvoice [\n\t\tamount=" + amount + ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\tcustomerName="
-				+ customerName + ", \n\t\tdescription=" + description + ", \n\t\tdueDate=" + dueDate
-				+ ", \n\t\tinvoiceNo=" + invoiceNo + ", \n\t\treference1=" + reference1 + "\n]\n\n";
-	}
-    
-    
+    /**
+     * Gets the value of the status property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link InvoiceStatus }
+     *     
+     */
+    public InvoiceStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the value of the status property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link InvoiceStatus }
+     *     
+     */
+    public void setStatus(InvoiceStatus value) {
+        this.status = value;
+    }
 
 }

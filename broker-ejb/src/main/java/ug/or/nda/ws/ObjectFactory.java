@@ -30,11 +30,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PaymentNotification }
+     * Create an instance of {@link Invoice }
      * 
      */
-    public PaymentNotification createPaymentNotification() {
-        return new PaymentNotification();
+    public Invoice createInvoice() {
+        return new Invoice();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceValidationRequest }
+     * 
+     */
+    public InvoiceValidationRequest createInvoiceValidationRequest() {
+        return new InvoiceValidationRequest();
+    }
+
+    /**
+     * Create an instance of {@link InvoiceValidationResponse }
+     * 
+     */
+    public InvoiceValidationResponse createInvoiceValidationResponse() {
+        return new InvoiceValidationResponse();
     }
 
     /**
@@ -45,45 +61,4 @@ public class ObjectFactory {
         return new RequestHeader();
     }
 
-    /**
-     * Create an instance of {@link PaymentNotificationRequest }
-     * 
-     */
-    public PaymentNotificationRequest createPaymentNotificationRequest() {
-        return new PaymentNotificationRequest();
-    }
-
-    /**
-     * Create an instance of {@link PaymentNotificationResponse }
-     * 
-     */
-    public PaymentNotificationResponse createPaymentNotificationResponse() {
-        return new PaymentNotificationResponse();
-    }
-    
-    /**
-     * Create an instance of {@link InvoiceValidationRequest }
-     * 
-     */
-    public InvoiceValidationRequest createInvoiceValidationRequest() {
-        return new InvoiceValidationRequest();
-    }
-
-    /**
-     * Create an instance of {@link Invoice }
-     * 
-     */
-    public Invoice createInvoice() {
-        return new Invoice();
-    }
-
-    /**
-     * Create an instance of {@link InvoiceValidationResponse }
-     * 
-     */
-    public InvoiceValidationResponse createInvoiceValidationResponse() {
-        return new InvoiceValidationResponse();
-    }
-    
-    
 }

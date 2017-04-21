@@ -16,7 +16,7 @@ import javax.xml.ws.WebServiceClient;
  * Generated source version: 2.0
  * 
  */
-@WebServiceClient(name = "invoiceWebService", targetNamespace = "http://wsi.nda.or.ug", wsdlLocation = "http://localhost:8080/ndamisws/invoice/validation/v1.0?wsdl")
+@WebServiceClient(name = "invoiceWebService", targetNamespace = "http://wsi.nda.or.ug", wsdlLocation = "http://212.22.169.19/ndamisws/invoice/validation/v1.0?wsdl")
 public class InvoiceWebService
     extends Service
 {
@@ -29,9 +29,9 @@ public class InvoiceWebService
         try {
             URL baseUrl;
             baseUrl = ug.or.nda.wsi.InvoiceWebService.class.getResource(".");
-            url = new URL(baseUrl, "http://localhost:8080/ndamisws/invoice/validation/v1.0?wsdl");
+            url = new URL(baseUrl, "http://212.22.169.19/ndamisws/invoice/validation/v1.0?wsdl");
         } catch (MalformedURLException e) {
-            logger.warning("Failed to create URL for the wsdl Location: 'http://localhost:8080/ndamisws/invoice/validation/v1.0?wsdl', retrying as a local file");
+            logger.warning("Failed to create URL for the wsdl Location: 'http://212.22.169.19/ndamisws/invoice/validation/v1.0?wsdl', retrying as a local file");
             logger.warning(e.getMessage());
         }
         INVOICEWEBSERVICE_WSDL_LOCATION = url;
