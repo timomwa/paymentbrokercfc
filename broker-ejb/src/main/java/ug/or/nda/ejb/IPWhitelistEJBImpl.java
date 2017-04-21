@@ -115,7 +115,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			}
 			
 			entry.setEnabled(Boolean.TRUE);
-			entry.setId(3234234l);
 			entry =  em.merge(entry);
 		}catch(Exception e){
 			logger.error(e.getMessage(),e);
