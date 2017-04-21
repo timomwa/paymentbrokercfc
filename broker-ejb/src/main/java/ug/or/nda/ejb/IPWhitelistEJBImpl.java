@@ -96,7 +96,8 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			final Session session = (Session) em.getDelegate();
 			IPAddressWhitelist entry = findEntry(ipAddress);
 			if(entry!=null){
-				session.createQuery("delete from IPAddressWhitelist WHERE id = :id").setParameter("id", entry.getId());
+				session.delete( entry);
+				//session.createQuery("delete from IPAddressWhitelist WHERE id = :id").setParameter("id", entry.getId());
 				logger.info("***deleted entity!!!*****");
 			}
 		}catch(Exception e){
