@@ -28,7 +28,7 @@ public class PaymentNotificationRawLog extends AbstractEntity {
 	@Column(name="payload", length=4010, nullable=false)
 	private String payload;
 	
-	@Column(name="payload", length=2048, nullable=false)
+	@Column(name="systemMsg", length=2048, nullable=false)
 	private String systemMsg;
 	
 	@Column(name="invoiceNo")
