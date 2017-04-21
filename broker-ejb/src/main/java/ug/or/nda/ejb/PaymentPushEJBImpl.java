@@ -107,9 +107,9 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	@Override
 	public boolean isInQueue(PaymentNotification notification) {
 		try{
-			List<Status> statuses = Arrays.asList( Status.JUST_IN, Status.IN_QUEUE,  Status.PROCESSING, Status.FAILED_TEMPORARILY);
-			Query qry = em.createQuery("from PaymentNotification WHERE retrycount<maxretries AND status IN (:statuses) AND invoiceNo = :invoiceNo ");
-			qry.setParameter("statuses", statuses);
+			//List<Status> statuses = Arrays.asList( Status.JUST_IN, Status.IN_QUEUE,  Status.PROCESSING, Status.FAILED_TEMPORARILY);
+			Query qry = em.createQuery("from PaymentNotification WHERE  invoiceNo = :invoiceNo ");
+			//qry.setParameter("statuses", statuses);
 			qry.setParameter("invoiceNo", notification.getInvoiceNo());
 			List<PaymentNotification> notifications = qry.getResultList();
 			return notifications.size()>0;
