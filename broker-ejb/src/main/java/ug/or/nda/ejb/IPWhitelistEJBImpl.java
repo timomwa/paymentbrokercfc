@@ -15,7 +15,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.trademarkea.ndamis.model.InvoiceMaster;
 
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
