@@ -91,7 +91,15 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 
 	private void removeEntry(String ipAddress) {
 		try{
-			em.createQuery("DELETE from IPAddressWhitelist WHERE ip_address = :ipAddress").setParameter("ipAddress", ipAddress).executeUpdate();
+			//Query qry = em.createQuery("delete from IPAddressWhitelist WHERE ip_address = :ipAddress");
+			//qry.setParameter("ipAddress", ipAddress);
+			//qry.executeUpdate();
+			
+			IPAddressWhitelist entry = findEntry(ipAddress);
+			if(entry!=null){
+				entry = em.merge(entry);
+				em.remove(entry);
+			}
 		}catch(Exception e){
 			logger.error(e.getMessage(),e);
 		}
@@ -128,9 +136,9 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	private IPAddressWhitelist findEntry(String ipAddress) {
 		IPAddressWhitelist entry = null;
 		try{
-			/*Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
+			Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
 			qry.setParameter("ipAddress", ipAddress);
-			entry = (IPAddressWhitelist) qry.getSingleResult();*/
+			entry = (IPAddressWhitelist) qry.getSingleResult();
 		}catch(NoResultException e){
 			logger.warn("no list found");
 		}catch(Exception e){
