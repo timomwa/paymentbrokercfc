@@ -1,5 +1,6 @@
 package ug.or.nda.ejb;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -79,6 +80,11 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			if(invoice==null)
 				throw new InvalidInvoiceException("Invoice with the number \""+notification.getInvoiceNo()+"\" Not found!");
+			int comparison = invoice.getAmount().compareTo( BigDecimal.valueOf( notification.getAmount()) );
+			if(comparison<0)
+				throw new BrokerException("The amount paid is less than the invoice amount! The amount required is "+invoice.getCurrencyCode()+". "+invoice.getAmount().doubleValue());
+			if(comparison>0)
+				throw new BrokerException("The amount paid is more than the invoice amount! The amount required is only "+invoice.getCurrencyCode()+". "+invoice.getAmount().doubleValue());
 			
 			notification = save(notification);
 			
