@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.jasypt.digest.PooledStringDigester;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
+import org.jasypt.salt.FixedStringSaltGenerator;
 import org.jasypt.salt.ZeroSaltGenerator;
 
 
@@ -50,7 +51,7 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 			InitializationEJBImpl.db_encryptor = new PooledPBEStringEncryptor();
 			InitializationEJBImpl.db_encryptor.setPassword(password_);
 			InitializationEJBImpl.db_encryptor.setPoolSize(cores);
-			//InitializationEJBImpl.db_encryptor.setSaltGenerator(new ZeroSaltGenerator());//RandomSaltGenerator
+			InitializationEJBImpl.db_encryptor.setSaltGenerator(new FixedStringSaltGenerator());//RandomSaltGenerator
 			HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
 			registry.registerPBEStringEncryptor("strongHibernateEncryptor", InitializationEJBImpl.db_encryptor);
 			logger.info("\n\t  *** successfully initialized pooled encryptor  ***\n");
