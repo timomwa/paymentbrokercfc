@@ -68,19 +68,6 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 			
 			PaymentNotificationRequest paymentNotif = paymentNotifConverterEJBI.convert(payment);
 			
-			URL wsdlLocation = null;
-			String endpoint = "http://ndaendopoint/ndamisws/invoice/payment/v1.0";
-			try {
-				wsdlLocation = new URL(endpoint+"?wsdl");
-			} catch (MalformedURLException e1) {
-				e1.printStackTrace();
-			}
-		
-			QName serviceName = new QName("http://wsp.nda.or.ug","paymentWebService");
-			
-			PaymentWebService_Service service1 = new PaymentWebService_Service(wsdlLocation,serviceName);
-			paymentport = service1.getPaymentWebServicePort();
-			
 			PaymentNotificationResponse resp = paymentport.paymentNotification(paymentNotif);
 			
 			if(resp.getStatusCode()==0){
