@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.constant.ResponseCode;
 import ug.or.nda.constant.Status;
+import ug.or.nda.constant.TerminalColorCodes;
 import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
@@ -63,7 +64,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		
-		logger.info(" BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request);
+		logger.info(TerminalColorCodes.ANSI_BLUE + " BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request+TerminalColorCodes.ANSI_RESET);
 		
 		PaymentNotificationRawLog notificationRawLog = null;
 		
@@ -98,7 +99,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			if(invoice.getStatus()==InvoiceStatus.PAID || invoice.getStatus()==InvoiceStatus.EXPIRED)
 				throw new InvalidInvoiceException("Invoice Rejected because this invoice has the status \""+invoice.getStatus()+"\".");
 			
-			logger.info(" Invoice found---> "+invoice.toString());
+			logger.info(" Invoice found---> "+TerminalColorCodes.ANSI_CYAN +invoice.toString()+TerminalColorCodes.ANSI_RESET);
 			
 			boolean paymentAlreadyInQueue = paymentPushEJB.isInQueue(notification);
 			
@@ -123,7 +124,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			systemMsg = be.getMessage();
 			
-			logger.error(be.getMessage() +" caller being ["+ipAddress+"]");
+			logger.error(TerminalColorCodes.ANSI_RED + be.getMessage() +TerminalColorCodes.ANSI_YELLOW+" caller being ["+ipAddress+"]"+TerminalColorCodes.ANSI_RESET);
 			
 			response.setStatusCode(ResponseCode.ERROR.getCode());
 			response.setStatusMessage(be.getMessage());
