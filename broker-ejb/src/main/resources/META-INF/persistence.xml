@@ -14,6 +14,8 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 			<property name="hibernate.transaction.manager_lookup_class"
 				value="org.hibernate.transaction.JBossTransactionManagerLookup" />
 			<property name="hibernate.archive.autodetection" value="class, hbm"/>
+			<property name="encryptorRegisteredName" value="strongHibernateEncryptor"/>
+			<property name="hibernate.connection.release_mode" value="after_transaction" />
 		</properties>
 	</persistence-unit>
 </persistence>
