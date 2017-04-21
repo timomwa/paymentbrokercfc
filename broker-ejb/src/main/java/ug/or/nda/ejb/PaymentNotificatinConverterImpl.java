@@ -12,6 +12,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.log4j.Logger;
 
 import ug.or.nda.dto.PaymentNotificationDTO;
+import ug.or.nda.dto.PaymentNotificationRequestDTO;
+import ug.or.nda.entities.PaymentNotification;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.ws.PaymentNotificationRequest;
 import ug.or.nda.ws.RequestHeader;
@@ -67,5 +70,13 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 		req.setRequestHeader(header);
 		return req;
 		
+	}
+
+	@Override
+	public PaymentNotificationRawLog convertToRawLog(PaymentNotification paymentNotification) {
+		PaymentNotificationRawLog rawLog = new PaymentNotificationRawLog();
+		rawLog.setInvoiceNo( paymentNotification.getInvoiceNo() );
+		rawLog.setPayload( paymentNotification.toString() );
+		return rawLog;
 	}
 }

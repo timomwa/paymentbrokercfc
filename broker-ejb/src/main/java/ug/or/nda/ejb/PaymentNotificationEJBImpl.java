@@ -18,9 +18,11 @@ import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.constant.ResponseCode;
 import ug.or.nda.constant.Status;
 import ug.or.nda.dto.InvoiceDTO;
+import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.dto.PaymentNotificationResponseDTO;
 import ug.or.nda.entities.PaymentNotification;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.exceptions.InvalidInvoiceException;
 
@@ -55,9 +57,22 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		
 		logger.info(request);
 		
+		PaymentNotificationRawLog notificationRawLog = null;
+		String systemMsg = "";
 		
 		try {
+			
 			PaymentNotification notification = paymentNotificationConverter.convert(request.getPaymentNotification());
+			
+			notificationRawLog = paymentNotificationConverter.convertToRawLog(notification);
+			
+			try{
+				notificationRawLog = save(notificationRawLog);
+			}catch(Exception e){
+				logger.error(e.getMessage(), e);
+			}
+			
+			validate(request);
 			
 			InvoiceDTO invoice = invoiceService.findInvoiceByInvoiceNumber(notification.getInvoiceNo());
 			
@@ -69,7 +84,11 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			response.setStatusCode(ResponseCode.SUCCESS.getCode());
 			response.setStatusMessage(ResponseCode.SUCCESS.name());
 			
+			systemMsg = ResponseCode.SUCCESS.name();
+			
 		}catch(BrokerException be){
+			
+			systemMsg = be.getMessage();
 			
 			logger.error(be.getMessage(), be);
 			
@@ -77,15 +96,50 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			response.setStatusMessage(be.getMessage());
 			
 		} catch (Exception e) {
-			
+			systemMsg = e.getMessage();
 			logger.error(e.getMessage(), e);
 			
 			response.setStatusCode(ResponseCode.ERROR.getCode());
 			response.setStatusMessage(ResponseCode.ERROR.name());
 			
+		}finally{
+			try{
+				if(notificationRawLog!=null){
+					notificationRawLog.setSystemMsg(systemMsg);
+					notificationRawLog = save(notificationRawLog);
+				}
+			}catch(Exception e){
+				logger.error(e.getMessage(), e);
+			}
 		}
 		
 		return response;
+	}
+
+	@Override
+	public PaymentNotificationRawLog save(PaymentNotificationRawLog notificationRawLog) throws Exception{
+		return em.merge(notificationRawLog);
+	}
+
+	private void validate(PaymentNotificationRequestDTO request) throws BrokerException{
+		if(request==null)
+			throw new BrokerException("Null request received!");
+		PaymentNotificationDTO notification = request.getPaymentNotification();
+		if(notification==null)
+			throw new BrokerException("Payment notification object not found!");
+		if(notification.getAmount()==null)
+			throw new BrokerException("Payment amount not supplied! Kindly specify this.");
+		if(notification.getCurrencyCode()==null || notification.getCurrencyCode().isEmpty())
+			throw new BrokerException("Currency code not supplied! Kindly specify this.");
+		if(notification.getInvoiceNo()==null || notification.getInvoiceNo().isEmpty())
+			throw new BrokerException("Invoice Number not supplied! Kindly specify this");
+		if(notification.getPaymentMode()==null || notification.getPaymentMode().isEmpty())
+			throw new BrokerException("Payment mode not supplied! Kindly specify this");
+		if(notification.getTransactionDate()==null )
+			throw new BrokerException("Transaction date not supplied! Kindly specify this");
+		if(notification.getTransactionRef()==null ||  notification.getTransactionRef().isEmpty())
+			throw new BrokerException("Transaction reference not supplied! Kindly specify this");
+		
 	}
 
 	@Override

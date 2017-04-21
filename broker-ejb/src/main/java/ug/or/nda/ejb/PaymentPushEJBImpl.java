@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.constant.Status;
 import ug.or.nda.entities.PaymentNotification;
+import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.ws.PaymentNotificationRequest;
 import ug.or.nda.ws.PaymentNotificationResponse;
 import ug.or.nda.wsp.PaymentWebService;
@@ -58,7 +59,7 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 		}
 	}
 	
-	public void pushPayment(PaymentNotification payment){
+	public void pushPayment(PaymentNotification payment) throws BrokerException{
 		try{
 			
 			PaymentNotificationRequest paymentNotif = paymentNotifConverterEJBI.convert(payment);
@@ -90,6 +91,9 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 			
 			logger.info(resp);
 			
+		}catch(BrokerException be){
+			logger.error(be.getMessage(), be);
+			throw be;
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 		}

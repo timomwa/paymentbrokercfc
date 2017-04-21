@@ -1,9 +1,10 @@
 package ug.or.nda.ejb;
 
 import ug.or.nda.entities.PaymentNotification;
+import ug.or.nda.exceptions.BrokerException;
 
 public interface PaymentPushEJBI {
 
-	public void pushPayment(PaymentNotification payment);
+	public void pushPayment(PaymentNotification payment) throws BrokerException;
 
 }
