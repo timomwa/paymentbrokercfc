@@ -16,10 +16,10 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 			<property name="hibernate.archive.autodetection" value="class, hbm"/>
 			<property name="encryptorRegisteredName" value="strongHibernateEncryptor"/>
 			
-			<property name="hibernate.dbcp.maxWait">-1</property>
-			<property name="hibernate.dbcp.maxIdle">-1</property>
-			<property name="hibernate.dbcp.validationQuery">select 1</property>
-			<property name="hibernate.dbcp.testOnBorrow">true</property>
+			<property name="hibernate.dbcp.maxWait"  value="-1"/>
+			<property name="hibernate.dbcp.maxIdle" value="-1"/>
+			<property name="hibernate.dbcp.validationQuery" value="select 1"/>
+			<property name="hibernate.dbcp.testOnBorrow" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>
