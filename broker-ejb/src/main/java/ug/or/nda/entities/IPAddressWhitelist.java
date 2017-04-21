@@ -8,7 +8,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-/*import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -16,10 +16,10 @@ import org.jasypt.hibernate4.type.EncryptedBooleanAsStringType;
 import org.jasypt.hibernate4.type.EncryptedDateAsStringType;
 import org.jasypt.hibernate4.type.EncryptedIntegerAsStringType;
 import org.jasypt.hibernate4.type.EncryptedStringType;
-*/
+
 @Entity
 @Table(name = "ip_whitelists")
-/*@TypeDefs({
+@TypeDefs({
 	@TypeDef(
 	    name="encryptedString", 
 	    typeClass=EncryptedStringType.class, 
@@ -65,7 +65,6 @@ import org.jasypt.hibernate4.type.EncryptedStringType;
 		    
 		)
 })
-*/
 public class IPAddressWhitelist extends AbstractEntity {
 	
 	/**
@@ -73,16 +72,16 @@ public class IPAddressWhitelist extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 4558429585280651310L;
 
-	//@Type(type="encryptedString")
+	@Type(type="encryptedString")
 	@Column(name="ip_address", unique=true)
 	private String ip_address;
 	
-	//@Type(type="encryptedBoolean")
+	@Type(type="encryptedBoolean")
 	@Column(name="enabled")
 	private Boolean enabled;
 	
 	
-	//@Type(type="encryptedDate")
+	@Type(type="encryptedDate")
 	@Column(name="dateAdded")
 	private Date dateAdded;
 	
