@@ -79,12 +79,12 @@ public class IPAddressWhitelist extends AbstractEntity {
 	private String ip_address;
 	
 	@Type(type="encryptedBoolean")
-	@Column(name="enabled")
+	@Column(name="enabled", nullable=false)
 	private Boolean enabled;
 	
 	
 	@Type(type="encryptedDate")
-	@Column(name="dateAdded")
+	@Column(name="dateAdded", nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateAdded;
 	

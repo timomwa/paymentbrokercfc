@@ -97,8 +97,8 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			
 			IPAddressWhitelist entry = findEntry(ipAddress);
 			if(entry!=null){
-				entry = em.merge(entry);
-				em.remove(entry);
+				em.createQuery("delete from IPAddressWhitelist WHERE id = :id").setParameter("id", entry.getId());
+				logger.info("***deleted entity!!!*****");
 			}
 		}catch(Exception e){
 			logger.error(e.getMessage(),e);
