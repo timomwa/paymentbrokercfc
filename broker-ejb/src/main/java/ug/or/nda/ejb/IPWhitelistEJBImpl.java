@@ -123,9 +123,9 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	private IPAddressWhitelist findEntry(String ipAddress) {
 		IPAddressWhitelist entry = null;
 		try{
-			Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
+			/*Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
 			qry.setParameter("ipAddress", ipAddress);
-			entry = (IPAddressWhitelist) qry.getSingleResult();
+			entry = (IPAddressWhitelist) qry.getSingleResult();*/
 		}catch(NoResultException e){
 			logger.warn("no list found");
 		}catch(Exception e){
