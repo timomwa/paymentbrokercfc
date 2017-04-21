@@ -41,14 +41,14 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 
 	public void initEncryptors(){
 		
-		int cores = Runtime.getRuntime().availableProcessors();
-		logger.info("\n\t *** cores - "+cores+" ***\n\n");
+		//int cores = Runtime.getRuntime().availableProcessors();
+		//logger.info("\n\t *** cores - "+cores+" ***\n\n");
 		
 		if(InitializationEJBImpl.db_encryptor==null){
 			logger.info("\n\t  *** initializing pooled encryptor  ***\n");
 			InitializationEJBImpl.db_encryptor = new PooledPBEStringEncryptor();
 			InitializationEJBImpl.db_encryptor.setPassword(password_);
-			InitializationEJBImpl.db_encryptor.setPoolSize(cores);
+			InitializationEJBImpl.db_encryptor.setPoolSize(1);
 			HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
 			registry.registerPBEStringEncryptor("strongHibernateEncryptor", InitializationEJBImpl.db_encryptor);
 			logger.info("\n\t  *** successfully initialized pooled encryptor  ***\n");
@@ -57,9 +57,9 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 		if(InitializationEJBImpl.password_digestor==null){
 			logger.info("\n\t  *** initializing poled digestor  ***\n");
 			InitializationEJBImpl.password_digestor = new PooledStringDigester();
-			InitializationEJBImpl.password_digestor.setPoolSize(cores);          
+			InitializationEJBImpl.password_digestor.setPoolSize(1);          
 			InitializationEJBImpl.password_digestor.setAlgorithm("SHA-1");
-			InitializationEJBImpl.password_digestor.setIterations(50000);//TODO figure out whether this affects performance
+			InitializationEJBImpl.password_digestor.setIterations(1000);//TODO figure out whether this affects performance
 			logger.info("\n\t  *** successfully initialized pooled digestor  ***\n");
 		}
 	}
