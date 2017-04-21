@@ -26,6 +26,7 @@ import ug.or.nda.entities.PaymentNotification;
 import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.exceptions.InvalidInvoiceException;
+import ug.or.nda.wsi.InvoiceStatus;
 
 @Stateless
 public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
@@ -62,7 +63,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		
-		logger.info(" INCOMING from ["+ipAddress+"] >>>>>>>>> "+request);
+		logger.info(" BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request);
 		
 		PaymentNotificationRawLog notificationRawLog = null;
 		
@@ -93,6 +94,9 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			if(invoice==null)
 				throw new InvalidInvoiceException("Invoice with the number \""+notification.getInvoiceNo()+"\" Not found!");
+			
+			if(invoice.getStatus()==InvoiceStatus.PAID || invoice.getStatus()==InvoiceStatus.EXPIRED)
+				throw new InvalidInvoiceException("Invoice Rejected because this invoice has the status \""+invoice.getStatus()+"\".");
 			
 			logger.info(" Invoice found---> "+invoice.toString());
 			
