@@ -80,7 +80,10 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			if(invoice==null)
 				throw new InvalidInvoiceException("Invoice with the number \""+notification.getInvoiceNo()+"\" Not found!");
+			
+			logger.info(" Invoice found---> "+invoice.toString());
 			int comparison = invoice.getAmount().compareTo( BigDecimal.valueOf( notification.getAmount()) );
+			
 			if(comparison<0)
 				throw new BrokerException("The amount paid is less than the invoice amount! The amount required is "+invoice.getCurrencyCode()+". "+invoice.getAmount().doubleValue());
 			if(comparison>0)
