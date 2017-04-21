@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 public class InitializerListenerForConfigs implements ServletContextListener {
 	
 	@EJB
-	private InitializationEJBImpl initializationEJB;
+	private InitializationEJBI initializationEJB;
 
 	private Logger logger = Logger.getLogger(getClass());
 	
@@ -28,6 +28,8 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent servletcontext) {
 		try{
 			logger.info("\n\n\n\t\t\t  --> initializationEJB --> "+initializationEJB+"\n\n");
+			if(initializationEJB!=null)
+				initializationEJB.initEncryptors();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
