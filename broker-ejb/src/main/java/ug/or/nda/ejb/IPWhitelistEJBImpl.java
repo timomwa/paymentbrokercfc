@@ -37,7 +37,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 		
 		
 		try{
-			em.joinTransaction();
 			em.getTransaction().begin();
 			
 			String msg = "Success";
