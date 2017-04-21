@@ -82,7 +82,7 @@ public class IPAddressWhitelist extends AbstractEntity {
 	private Boolean enabled;
 	
 	
-	@Type(type="encryptedDate")
+	//@Type(type="encryptedDate")
 	@Column(name="dateAdded", nullable=false)
 	private Date dateAdded;
 	
