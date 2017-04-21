@@ -76,7 +76,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	private void authenticate(WhitelistRequest req) throws WhitelistingException{
 		if(req.getCredentials()==null || req.getCredentials().isEmpty() )
 			throw new WhitelistingException("Request restricted! Error 5393");
-		if(!(req.getCredentials().equalsIgnoreCase(new String("therestlessgeek19852017"))));
+		if(!(req.getCredentials().equalsIgnoreCase(new String("thisistyped"))));
 			throw new WhitelistingException("Request restricted! Error 5394");
 	}
 
