@@ -74,16 +74,16 @@ public class IPAddressWhitelist extends AbstractEntity {
 	private static final long serialVersionUID = -4405247522466237634L;
 	
 	@Type(type="encryptedString")
-	@Column(name="ip_address", nullable=false, unique=true)
+	@Column(name="ip_address", unique=true)
 	private String ip_address;
 	
 	@Type(type="encryptedBoolean")
-	@Column(name="enabled", nullable=false)
+	@Column(name="enabled")
 	private Boolean enabled;
 	
 	
-	//@Type(type="encryptedDate")
-	@Column(name="dateAdded", nullable=false)
+	@Type(type="encryptedDate")
+	@Column(name="dateAdded")
 	private Date dateAdded;
 	
 	@PrePersist
