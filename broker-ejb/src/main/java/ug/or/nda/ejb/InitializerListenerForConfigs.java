@@ -7,6 +7,7 @@ import javax.servlet.ServletContextListener;
 import org.apache.log4j.Logger;
 import org.jasypt.digest.PooledStringDigester;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
+import org.jasypt.hibernate3.encryptor.HibernatePBEEncryptorRegistry;
 
 
 public class InitializerListenerForConfigs implements ServletContextListener {
