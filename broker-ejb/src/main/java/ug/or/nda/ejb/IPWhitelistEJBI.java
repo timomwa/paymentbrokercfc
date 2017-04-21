@@ -7,4 +7,6 @@ public interface IPWhitelistEJBI {
 
 	public WhitelistResponse process(WhitelistRequest req);
 
+	public boolean isWhitelisted(String ipAddress);
+
 }

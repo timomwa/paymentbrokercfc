@@ -143,9 +143,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			final Criteria criteria = session.createCriteria(IPAddressWhitelist.class)
 					.add(Restrictions.eq("ip_address", ipAddress));
 			entry =  (IPAddressWhitelist) criteria.uniqueResult();
-			/*Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
-			qry.setParameter("ipAddress", ipAddress);
-			entry = (IPAddressWhitelist) qry.getSingleResult();*/
 		}catch(NoResultException e){
 			logger.warn("no list found");
 		}catch(Exception e){
@@ -173,6 +170,13 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			logger.error(e.getMessage(), e);
 		}
 		return resp;
+	}
+
+
+	@Override
+	public boolean isWhitelisted(String ipAddress) {
+		IPAddressWhitelist entry = findEntry(ipAddress);
+		return (entry!=null && entry.getEnabled());
 	}
 
 }

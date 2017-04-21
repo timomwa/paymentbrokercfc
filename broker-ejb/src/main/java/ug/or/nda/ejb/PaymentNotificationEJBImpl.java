@@ -30,6 +30,9 @@ import ug.or.nda.exceptions.InvalidInvoiceException;
 @Stateless
 public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	
+	public static final String CALLER_NOT_ALLOWED = "BE401";//Broker exception Error 401 - Unauthorized
+
+
 	private Logger logger = Logger.getLogger(getClass());
 	
 	
@@ -41,6 +44,9 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	
 	@EJB
 	private PaymentPushEJBI paymentPushEJB;
+	
+	@EJB
+	private IPWhitelistEJBI ipWhitelistEJB;
 	
 	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
 	protected EntityManager em;
@@ -56,13 +62,18 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		
-		logger.info(" INCOMING.. >>>>>>>>> "+request);
+		logger.info(" INCOMING from ["+ipAddress+"] >>>>>>>>> "+request);
 		
 		PaymentNotificationRawLog notificationRawLog = null;
 		
 		String systemMsg = "";
 		
 		try {
+			
+			boolean hostAllowed = ipWhitelistEJB.isWhitelisted(ipAddress);
+			
+			if(!hostAllowed)
+				throw new BrokerException("Error: Forbidden - "+CALLER_NOT_ALLOWED);
 			
 			PaymentNotification notification = paymentNotificationConverter.convert(request.getPaymentNotification());
 			
@@ -108,7 +119,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			systemMsg = be.getMessage();
 			
-			logger.error(be.getMessage(), be);
+			logger.error(be.getMessage() +" caller being ["+ipAddress+"]");
 			
 			response.setStatusCode(ResponseCode.ERROR.getCode());
 			response.setStatusMessage(be.getMessage());
