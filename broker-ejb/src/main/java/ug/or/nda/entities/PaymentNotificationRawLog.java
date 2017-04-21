@@ -35,7 +35,7 @@ public class PaymentNotificationRawLog extends AbstractEntity {
 	@Index(name="invoiceNoIdx")
 	private String invoiceNo;
 	
-	@Column(name="sourcehost")
+	@Column(name="sourcehost", nullable=false)
 	private String sourcehost;
 	
 	@Temporal(TemporalType.TIMESTAMP)

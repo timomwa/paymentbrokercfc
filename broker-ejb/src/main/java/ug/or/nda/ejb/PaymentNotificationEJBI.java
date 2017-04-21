@@ -11,7 +11,7 @@ public interface PaymentNotificationEJBI {
 
 	public PaymentNotification save(PaymentNotification paymentNotification) throws Exception;
 	
-	public PaymentNotificationResponseDTO paymentNotification(PaymentNotificationRequestDTO request);
+	public PaymentNotificationResponseDTO paymentNotification(PaymentNotificationRequestDTO request, String ipAddress);
 
 	public void pushPayments();
 	

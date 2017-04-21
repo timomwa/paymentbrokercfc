@@ -51,7 +51,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	}
 
 	@Override
-	public PaymentNotificationResponseDTO paymentNotification(PaymentNotificationRequestDTO request) {
+	public PaymentNotificationResponseDTO paymentNotification(PaymentNotificationRequestDTO request, String ipAddress) {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		
@@ -67,6 +67,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			notificationRawLog = paymentNotificationConverter.convertToRawLog(notification);
 			
 			try{
+				notificationRawLog.setSourcehost(ipAddress);
 				notificationRawLog = save(notificationRawLog);
 			}catch(Exception e){
 				logger.error(e.getMessage(), e);
