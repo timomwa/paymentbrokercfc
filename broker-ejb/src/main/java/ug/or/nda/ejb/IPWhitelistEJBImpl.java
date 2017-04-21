@@ -14,7 +14,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import flex.messaging.log.Log;
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
