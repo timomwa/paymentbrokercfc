@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -13,7 +14,9 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
+import flex.messaging.log.Log;
 import ug.or.nda.constant.AppPropertyHolder;
+import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
 import ug.or.nda.dto.WhitelistRequest;
 import ug.or.nda.dto.WhitelistResponse;
@@ -26,6 +29,9 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
+	@Inject
+	private IPAddressWhitelistDAOI ipWLDao;
+	
 	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
 	protected EntityManager em;
 	
@@ -34,10 +40,9 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 		
 		WhitelistResponse resp = new WhitelistResponse();
 		logger.info(req);
-		
+		logger.info("\n\n\n::: ipWLDao -->  "+ipWLDao+" \n\n");
 		
 		try{
-			em.getTransaction().begin();
 			
 			String msg = "Success";
 			
@@ -65,7 +70,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			
 			resp.setSuccess(Boolean.TRUE);
 			resp.setMessage(msg);
-			em.getTransaction().commit();
 		}catch(WhitelistingException we){
 			logger.error(we.getMessage());
 			resp.setSuccess(Boolean.FALSE);
