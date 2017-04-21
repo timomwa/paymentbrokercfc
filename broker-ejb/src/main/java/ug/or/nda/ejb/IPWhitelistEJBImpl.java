@@ -78,6 +78,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			resp.setSuccess(Boolean.FALSE);
 			resp.setMessage(we.getMessage());
 		}catch(Exception e){
+			logger.error(e.getMessage(), e);
 			resp.setSuccess(Boolean.FALSE);
 			resp.setMessage("Error!");
 		}
