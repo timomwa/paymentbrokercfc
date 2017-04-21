@@ -5,10 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.UserTransaction;
 
 import org.apache.log4j.Logger;
 
@@ -20,19 +24,27 @@ import ug.or.nda.entities.IPAddressWhitelist;
 import ug.or.nda.exceptions.WhitelistingException;
 
 @Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
 public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
 	protected EntityManager em;
+	
+	@Inject
+	protected UserTransaction utx;
 
 	@Override
 	public WhitelistResponse process(WhitelistRequest req) {
 		
 		WhitelistResponse resp = new WhitelistResponse();
 		logger.info(req);
+		
+		
 		try{
+			
+			utx.begin();
 			
 			String msg = "Success";
 			
@@ -47,6 +59,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 				
 				makeEntry(req);
 				
+				
 			}else if(req.getAction() == Action.REMOVE){
 				
 				removeEntry(req.getIpAddress());
@@ -59,7 +72,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			
 			resp.setSuccess(Boolean.TRUE);
 			resp.setMessage(msg);
-			
+			utx.commit();
 		}catch(WhitelistingException we){
 			logger.error(we.getMessage());
 			resp.setSuccess(Boolean.FALSE);
