@@ -70,6 +70,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			try{
 				notificationRawLog.setSourcehost(ipAddress);
+				notificationRawLog.setSystemMsg(systemMsg);
 				notificationRawLog = save(notificationRawLog);
 			}catch(Exception e){
 				logger.error(e.getMessage(), e);
