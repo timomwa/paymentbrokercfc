@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -14,7 +12,6 @@ import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
 
-import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
 import ug.or.nda.dto.WhitelistRequest;
@@ -23,7 +20,6 @@ import ug.or.nda.entities.IPAddressWhitelist;
 import ug.or.nda.exceptions.WhitelistingException;
 
 @Stateless
-@TransactionManagement(TransactionManagementType.BEAN)
 public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	
 	private Logger logger = Logger.getLogger(getClass());
@@ -119,9 +115,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			}
 			
 			entry.setEnabled(Boolean.TRUE);
-			em.joinTransaction();
 			entry =  em.merge(entry);
-			em.flush();
 		}catch(Exception e){
 			logger.error(e.getMessage(),e);
 		}
