@@ -11,7 +11,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import com.trademarkea.ndamis.model.InvoiceMaster;
 
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
@@ -136,9 +140,13 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	private IPAddressWhitelist findEntry(String ipAddress) {
 		IPAddressWhitelist entry = null;
 		try{
-			Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
+			final Session session = (Session) em.getDelegate();
+			final Criteria criteria = session.createCriteria(IPAddressWhitelist.class)
+					.add(Restrictions.eq("ip_address", ipAddress));
+			entry =  (IPAddressWhitelist) criteria.uniqueResult();
+			/*Query qry = em.createQuery("from IPAddressWhitelist WHERE ip_address = :ipAddress");
 			qry.setParameter("ipAddress", ipAddress);
-			entry = (IPAddressWhitelist) qry.getSingleResult();
+			entry = (IPAddressWhitelist) qry.getSingleResult();*/
 		}catch(NoResultException e){
 			logger.warn("no list found");
 		}catch(Exception e){
