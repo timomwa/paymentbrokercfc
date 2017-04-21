@@ -50,7 +50,7 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 			InitializationEJBImpl.db_encryptor = new PooledPBEStringEncryptor();
 			InitializationEJBImpl.db_encryptor.setPassword(password_);
 			InitializationEJBImpl.db_encryptor.setPoolSize(cores);
-			InitializationEJBImpl.db_encryptor.setSaltGenerator(new ZeroSaltGenerator());
+			//InitializationEJBImpl.db_encryptor.setSaltGenerator(new ZeroSaltGenerator());//RandomSaltGenerator
 			HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
 			registry.registerPBEStringEncryptor("strongHibernateEncryptor", InitializationEJBImpl.db_encryptor);
 			logger.info("\n\t  *** successfully initialized pooled encryptor  ***\n");
