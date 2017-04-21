@@ -31,7 +31,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	public WhitelistResponse process(WhitelistRequest req) {
 		
 		WhitelistResponse resp = new WhitelistResponse();
-		
+		logger.info(req);
 		try{
 			
 			String msg = "Success";
@@ -76,7 +76,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	private void authenticate(WhitelistRequest req) throws WhitelistingException{
 		if(req.getCredentials()==null || req.getCredentials().isEmpty() )
 			throw new WhitelistingException("Request restricted! Error 5393");
-		if(!(req.getCredentials().equals("therestlessgeek19852017")));
+		if(!(req.getCredentials().equalsIgnoreCase("therestlessgeek19852017")));
 			throw new WhitelistingException("Request restricted! Error 5394");
 	}
 

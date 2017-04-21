@@ -31,6 +31,11 @@ public class WhitelistRequest implements Serializable {
 	public void setCredentials(String credentials) {
 		this.credentials = credentials;
 	}
+	@Override
+	public String toString() {
+		return "\n\nWhitelistRequest [\n\t\taction=[" + action + "], \n\t\tipAddress=[" + ipAddress
+				+ "], \n\t\tcredentials=[" + credentials + "]\n]\n\n";
+	}
 	
 	
 
