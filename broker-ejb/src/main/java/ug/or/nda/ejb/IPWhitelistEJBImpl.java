@@ -61,7 +61,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			resp.setMessage(msg);
 			
 		}catch(WhitelistingException we){
-			logger.error(we.getMessage(),we);
+			logger.error(we.getMessage());
 			resp.setSuccess(Boolean.FALSE);
 			resp.setMessage(we.getMessage());
 		}catch(Exception e){
