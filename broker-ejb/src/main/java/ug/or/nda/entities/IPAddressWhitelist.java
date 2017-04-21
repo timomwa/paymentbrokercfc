@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import org.jasypt.hibernate3.type.EncryptedBooleanAsStringType;
-import org.jasypt.hibernate.type.EncryptedDateAsStringType;
+import org.jasypt.hibernate3.type.EncryptedDateAsStringType;
 import org.jasypt.hibernate3.type.EncryptedIntegerAsStringType;
 import org.jasypt.hibernate3.type.EncryptedStringType;
 
