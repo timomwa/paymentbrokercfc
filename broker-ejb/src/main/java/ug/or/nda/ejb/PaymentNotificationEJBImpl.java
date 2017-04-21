@@ -56,9 +56,10 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		
-		logger.info(request);
+		logger.info(" INCOMING.. >>>>>>>>> "+request);
 		
 		PaymentNotificationRawLog notificationRawLog = null;
+		
 		String systemMsg = "";
 		
 		try {
@@ -82,6 +83,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 				throw new InvalidInvoiceException("Invoice with the number \""+notification.getInvoiceNo()+"\" Not found!");
 			
 			logger.info(" Invoice found---> "+invoice.toString());
+			
 			int comparison = invoice.getAmount().compareTo( BigDecimal.valueOf( notification.getAmount()) );
 			
 			if(comparison<0)
