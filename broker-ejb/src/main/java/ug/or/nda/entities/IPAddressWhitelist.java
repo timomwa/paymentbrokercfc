@@ -26,7 +26,7 @@ import org.jasypt.hibernate3.type.EncryptedStringType;
 	    parameters= {
 	        @Parameter(
 	        		name="encryptorRegisteredName", 
-	        		value="myHibernateStringEncryptor"
+	        		value="strongHibernateEncryptor"
 	        		)
 	    }
 	    
@@ -37,7 +37,7 @@ import org.jasypt.hibernate3.type.EncryptedStringType;
 		    parameters= {
 		        @Parameter(
 		        		name="encryptorRegisteredName", 
-		        		value="myHibernateStringEncryptor"
+		        		value="strongHibernateEncryptor"
 		        		)
 		    }
 		    
@@ -48,7 +48,7 @@ import org.jasypt.hibernate3.type.EncryptedStringType;
 		    parameters= {
 		        @Parameter(
 		        		name="encryptorRegisteredName", 
-		        		value="myHibernateStringEncryptor"
+		        		value="strongHibernateEncryptor"
 		        		)
 		    }
 		    
@@ -59,7 +59,7 @@ import org.jasypt.hibernate3.type.EncryptedStringType;
 		    parameters= {
 		        @Parameter(
 		        		name="encryptorRegisteredName", 
-		        		value="myHibernateStringEncryptor"
+		        		value="strongHibernateEncryptor"
 		        		)
 		    }
 		    
