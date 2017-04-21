@@ -1,18 +1,15 @@
 package ug.or.nda.ejb;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.UserTransaction;
 
 import org.apache.log4j.Logger;
 
@@ -32,9 +29,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
 	protected EntityManager em;
 	
-	@Inject
-	protected UserTransaction utx;
-
 	@Override
 	public WhitelistResponse process(WhitelistRequest req) {
 		
@@ -43,8 +37,8 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 		
 		
 		try{
-			
-			utx.begin();
+			em.joinTransaction();
+			em.getTransaction().begin();
 			
 			String msg = "Success";
 			
@@ -72,7 +66,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			
 			resp.setSuccess(Boolean.TRUE);
 			resp.setMessage(msg);
-			utx.commit();
+			em.getTransaction().commit();
 		}catch(WhitelistingException we){
 			logger.error(we.getMessage());
 			resp.setSuccess(Boolean.FALSE);
