@@ -31,7 +31,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	@Inject
 	private IPAddressWhitelistDAOI ipWLDao;
 	
-	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
+	@PersistenceContext//(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
 	protected EntityManager em;
 	
 	@Override
@@ -119,8 +119,9 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 			}
 			
 			entry.setEnabled(Boolean.TRUE);
-			
-			return em.merge(entry);
+			em.joinTransaction();
+			entry =  em.merge(entry);
+			em.flush();
 		}catch(Exception e){
 			logger.error(e.getMessage(),e);
 		}
