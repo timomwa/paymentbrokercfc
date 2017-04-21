@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
@@ -91,13 +92,11 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 
 	private void removeEntry(String ipAddress) {
 		try{
-			//Query qry = em.createQuery("delete from IPAddressWhitelist WHERE ip_address = :ipAddress");
-			//qry.setParameter("ipAddress", ipAddress);
-			//qry.executeUpdate();
 			
+			final Session session = (Session) em.getDelegate();
 			IPAddressWhitelist entry = findEntry(ipAddress);
 			if(entry!=null){
-				em.createQuery("delete from IPAddressWhitelist WHERE id = :id").setParameter("id", entry.getId());
+				session.createQuery("delete from IPAddressWhitelist WHERE id = :id").setParameter("id", entry.getId());
 				logger.info("***deleted entity!!!*****");
 			}
 		}catch(Exception e){
@@ -148,6 +147,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private String listWhitelist() {
 		String resp = "";
 		try{
