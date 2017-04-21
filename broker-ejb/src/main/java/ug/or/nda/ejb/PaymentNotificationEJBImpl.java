@@ -85,6 +85,11 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 			logger.info(" Invoice found---> "+invoice.toString());
 			
+			boolean paymentAlreadyInQueue = paymentPushEJB.isInQueue(notification);
+			
+			if(paymentAlreadyInQueue)
+				throw new BrokerException("Rejected! A similar payment is in the queue.");
+			
 			int comparison = invoice.getAmount().compareTo( BigDecimal.valueOf( notification.getAmount()) );
 			
 			if(comparison<0)

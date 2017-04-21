@@ -7,4 +7,6 @@ public interface PaymentPushEJBI {
 
 	public void pushPayment(PaymentNotification payment) throws BrokerException;
 
+	public boolean isInQueue(PaymentNotification notification);
+
 }

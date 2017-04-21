@@ -2,10 +2,8 @@ package ug.or.nda.ejb;
 
 import java.util.Date;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 
 import org.apache.log4j.Logger;
 import org.jasypt.digest.PooledStringDigester;

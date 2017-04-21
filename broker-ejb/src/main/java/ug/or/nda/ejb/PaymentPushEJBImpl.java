@@ -2,14 +2,18 @@ package ug.or.nda.ejb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
@@ -97,6 +101,25 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 		}catch(Exception e){
 			logger.error(e.getMessage(), e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean isInQueue(PaymentNotification notification) {
+		try{
+			List<Status> statuses = Arrays.asList( Status.JUST_IN, Status.IN_QUEUE,  Status.PROCESSING, Status.FAILED_TEMPORARILY);
+			Query qry = em.createQuery("from PaymentNotification WHERE retrycount<maxretries AND status IN (:statuses) AND invoiceNo = :invoiceNo ");
+			qry.setParameter("statuses", statuses);
+			qry.setParameter("invoiceNo", notification.getInvoiceNo());
+			List<PaymentNotification> notifications = qry.getResultList();
+			return notifications.size()>0;
+		}catch(NoResultException e){
+			logger.warn("No payment notif in queue found");
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		
+		return false;
 	}
 	
 
