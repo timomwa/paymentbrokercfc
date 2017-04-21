@@ -12,10 +12,10 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-import org.jasypt.hibernate4.type.EncryptedBooleanAsStringType;
-import org.jasypt.hibernate4.type.EncryptedDateAsStringType;
-import org.jasypt.hibernate4.type.EncryptedIntegerAsStringType;
-import org.jasypt.hibernate4.type.EncryptedStringType;
+import org.jasypt.hibernate3.type.EncryptedBooleanAsStringType;
+import org.jasypt.hibernate3.type.EncryptedDateAsStringType;
+import org.jasypt.hibernate3.type.EncryptedIntegerAsStringType;
+import org.jasypt.hibernate3.type.EncryptedStringType;
 
 @Entity
 @Table(name = "ip_whitelists")
