@@ -37,7 +37,7 @@ public class InvoiceValidationRequestConverterImpl implements InvoiceValidationR
 	}
 
 	@Override
-	public InvoiceValidationResponseDTO convert(InvoiceValidationResponse resp) throws BrokerException {
+	public InvoiceValidationResponseDTO convert(InvoiceValidationResponse resp, boolean paymentExists) throws BrokerException {
 		InvoiceValidationResponseDTO response = new InvoiceValidationResponseDTO();
 		
 		response.setStatusCode(resp.getStatusCode());
@@ -54,6 +54,7 @@ public class InvoiceValidationRequestConverterImpl implements InvoiceValidationR
 			invoiceDTO.setInvoiceNo( invoice.getInvoiceNo() );
 			invoiceDTO.setReference1( invoice.getReference1() );
 			invoiceDTO.setStatus( invoice.getStatus() );
+			invoiceDTO.setPaymentExists(paymentExists);
 			response.setInvoice(invoiceDTO);
 			
 		}

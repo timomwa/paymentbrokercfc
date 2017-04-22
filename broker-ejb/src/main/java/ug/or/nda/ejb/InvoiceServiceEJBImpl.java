@@ -29,6 +29,10 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	
 	@EJB
 	private InvoiceValidationRequestConverterI invoiceValidatorReqConverter;
+	
+	@EJB
+	private PaymentPushEJBI paymentPushEJB;
+	
 
 	@Override
 	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO request) throws BrokerException{
@@ -55,9 +59,11 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         InvoiceValidationResponse resp  = port1.validateInvoice(req);
         logger.info("<<<<<< [Server Response] " + resp);
         
-        validationReq =  invoiceValidatorReqConverter.convert(resp);
-
-		return validationReq;
+        boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
+        
+        validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists);
+        
+        return validationReq;
 	}
 	
 	@Override
@@ -90,7 +96,8 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         logger.info("<<<<<< [Server Response] " + resp);
         
         if(resp.getStatusCode()==0){
-        	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp);
+        	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
+        	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists);
         	invoiceDTO = validationReq.getInvoice();
         }
         

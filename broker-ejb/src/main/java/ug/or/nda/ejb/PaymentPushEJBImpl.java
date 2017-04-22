@@ -107,11 +107,16 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean isInQueue(PaymentNotification notification) {
+		return isInQueue(notification.getInvoiceNo());
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean isInQueue(String  invoiceNo) {
 		try{
-			//List<Status> statuses = Arrays.asList( Status.JUST_IN, Status.IN_QUEUE,  Status.PROCESSING, Status.FAILED_TEMPORARILY);
 			Query qry = em.createQuery("from PaymentNotification WHERE  invoiceNo = :invoiceNo ");
-			//qry.setParameter("statuses", statuses);
-			qry.setParameter("invoiceNo", notification.getInvoiceNo());
+			qry.setParameter("invoiceNo", invoiceNo);
 			List<PaymentNotification> notifications = qry.getResultList();
 			return notifications.size()>0;
 		}catch(NoResultException e){

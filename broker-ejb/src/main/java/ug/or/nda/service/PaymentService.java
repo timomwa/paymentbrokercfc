@@ -14,6 +14,7 @@ import org.jboss.wsf.spi.annotation.WebContext;
 
 import ug.or.nda.dto.PaymentNotificationResponseDTO;
 import ug.or.nda.ejb.PaymentNotificationEJBI;
+import ug.or.nda.ejb.PaymentPushEJBI;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 
 @WebService(name="paymentService" , targetNamespace="http://services.nda.or.ug")
@@ -26,6 +27,9 @@ public class PaymentService {
 	
 	@EJB
 	private PaymentNotificationEJBI paymentNotification;
+	
+	@EJB
+	private PaymentPushEJBI paymentPushEJB;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	

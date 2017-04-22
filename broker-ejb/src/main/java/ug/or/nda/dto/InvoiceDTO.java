@@ -21,6 +21,7 @@ public class InvoiceDTO implements Serializable {
 	private Date dueDate;
 	private String reference1;
 	private InvoiceStatus status;
+	private Boolean paymentExists;
 	
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -70,14 +71,19 @@ public class InvoiceDTO implements Serializable {
 	public void setStatus(InvoiceStatus status) {
 		this.status = status;
 	}
+	public Boolean getPaymentExists() {
+		return paymentExists;
+	}
+	public void setPaymentExists(Boolean paymentExists) {
+		this.paymentExists = paymentExists;
+	}
+	
 	@Override
 	public String toString() {
 		return "\n\nInvoiceDTO [\n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tdescription=" + description + ", \n\t\tamount="
 				+ amount + ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\tcustomerName=" + customerName
 				+ ", \n\t\tdueDate=" + dueDate + ", \n\t\treference1=" + reference1 + ", \n\t\tstatus=" + status
-				+ "\n]\n\n";
+				+ ", \n\t\tpaymentExists=" + paymentExists + "\n]\n\n";
 	}
 	
-	
-
 }

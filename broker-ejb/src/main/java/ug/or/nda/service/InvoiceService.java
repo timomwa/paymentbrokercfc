@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import ug.or.nda.dto.InvoiceValidationResponseDTO;
 import ug.or.nda.ejb.InvoiceServiceEJBI;
+import ug.or.nda.ejb.PaymentPushEJBI;
 import ug.or.nda.dto.InvoiceValidationRequestDTO;
 
 import org.jboss.wsf.spi.annotation.WebContext;
@@ -25,7 +26,6 @@ public class InvoiceService  {
 	
 	@EJB
 	private InvoiceServiceEJBI invoiceService;
-	
 	
 	
 	@WebMethod
