@@ -5,12 +5,15 @@ import java.net.URL;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 
+import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.InvoiceValidationRequestDTO;
 import ug.or.nda.dto.InvoiceValidationResponseDTO;
@@ -27,6 +30,9 @@ import ug.or.nda.wsi.ValidationWebService;
 
 @Stateless
 public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
+	
+	@PersistenceContext(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
+	protected EntityManager em;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
