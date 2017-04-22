@@ -10,6 +10,6 @@ public interface InvoiceValidationRequestConverterI {
 	
 	public InvoiceValidationRequest convert(InvoiceValidationRequestDTO paymentNotification) throws BrokerException;
 
-	public InvoiceValidationResponseDTO convert(InvoiceValidationResponse resp, boolean paymentExists) throws BrokerException;
+	public InvoiceValidationResponseDTO convert(InvoiceValidationResponse resp, boolean paymentExists, String systemMessage) throws BrokerException;
 
 }

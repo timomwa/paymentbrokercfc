@@ -18,5 +18,7 @@ public interface PaymentNotificationEJBI {
 	public List<PaymentNotification> fetchUnprocessedNotifications(int limit);
 	
 	public PaymentNotificationRawLog save(PaymentNotificationRawLog notificationRawLog) throws Exception;
+
+	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo);
 	
 }

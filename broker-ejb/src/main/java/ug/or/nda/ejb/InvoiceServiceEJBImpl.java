@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.InvoiceValidationRequestDTO;
 import ug.or.nda.dto.InvoiceValidationResponseDTO;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.services.InvoiceServiceService;
 import ug.or.nda.services.ValidationService;
@@ -32,6 +33,10 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	
 	@EJB
 	private PaymentPushEJBI paymentPushEJB;
+	
+	
+	@EJB
+	private PaymentNotificationEJBI paymentNotificationEJB;
 	
 
 	@Override
@@ -61,7 +66,11 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         
         boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
         
-        validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists);
+        PaymentNotificationRawLog rawlog =  paymentNotificationEJB.findLastRawLogByInvoiceNo(request.getInvoiceNo());
+        
+        String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
+        
+        validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists, systemMsg);
         
         return validationReq;
 	}
@@ -96,8 +105,13 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         logger.info("<<<<<< [Server Response] " + resp);
         
         if(resp.getStatusCode()==0){
+        	
         	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
-        	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists);
+        	
+        	PaymentNotificationRawLog rawlog =  paymentNotificationEJB.findLastRawLogByInvoiceNo(invoiceNo);
+            String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
+        	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists,systemMsg);
+        	
         	invoiceDTO = validationReq.getInvoice();
         }
         

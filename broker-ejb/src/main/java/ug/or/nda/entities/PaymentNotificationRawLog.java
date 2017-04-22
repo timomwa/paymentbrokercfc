@@ -111,7 +111,7 @@ public class PaymentNotificationRawLog extends AbstractEntity {
 	}
 
 	public String getSystemMsg() {
-		return systemMsg;
+		return systemMsg!=null ? systemMsg : "";
 	}
 
 	public void setSystemMsg(String systemMsg) {

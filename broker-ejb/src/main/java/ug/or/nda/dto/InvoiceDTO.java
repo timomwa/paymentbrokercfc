@@ -22,6 +22,7 @@ public class InvoiceDTO implements Serializable {
 	private String reference1;
 	private InvoiceStatus status;
 	private Boolean paymentExists;
+	private String systemMessage;
 	
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -78,12 +79,19 @@ public class InvoiceDTO implements Serializable {
 		this.paymentExists = paymentExists;
 	}
 	
+	public String getSystemMessage() {
+		return systemMessage;
+	}
+	public void setSystemMessage(String systemMessage) {
+		this.systemMessage = systemMessage;
+	}
 	@Override
 	public String toString() {
 		return "\n\nInvoiceDTO [\n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tdescription=" + description + ", \n\t\tamount="
 				+ amount + ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\tcustomerName=" + customerName
 				+ ", \n\t\tdueDate=" + dueDate + ", \n\t\treference1=" + reference1 + ", \n\t\tstatus=" + status
-				+ ", \n\t\tpaymentExists=" + paymentExists + "\n]\n\n";
+				+ ", \n\t\tpaymentExists=" + paymentExists + ", \n\t\tsystemMessage=" + systemMessage + "\n]\n\n";
 	}
+	
 	
 }
