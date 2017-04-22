@@ -224,25 +224,6 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		return payments;
 	}
 
-	@Override
-	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo) {
-		PaymentNotificationRawLog rec = null;
-		
-		try{
-			
-			Query qry = em.createQuery("from PaymentNotificationRawLog pnrl WHERE pnrl.invoiceNo = :invoiceNo order by timeStamp desc");
-			qry.setParameter("invoiceNo", invoiceNo);
-			qry.setFirstResult(0);
-			qry.setMaxResults(1);
-			rec = (PaymentNotificationRawLog) qry.getSingleResult();
-			
-		}catch(NoResultException e){
-			logger.warn("no payment notification");
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-		}
-		
-		return rec;
-	}
+	
 
 }

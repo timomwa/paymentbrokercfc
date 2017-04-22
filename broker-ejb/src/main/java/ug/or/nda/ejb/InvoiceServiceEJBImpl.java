@@ -5,6 +5,8 @@ import java.net.URL;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
@@ -35,9 +37,6 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	private PaymentPushEJBI paymentPushEJB;
 	
 	
-	@EJB
-	private PaymentNotificationEJBI paymentNotificationEJB;
-	
 
 	@Override
 	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO request) throws BrokerException{
@@ -66,7 +65,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         
         boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
         
-        PaymentNotificationRawLog rawlog =  paymentNotificationEJB.findLastRawLogByInvoiceNo(request.getInvoiceNo());
+        PaymentNotificationRawLog rawlog =  findLastRawLogByInvoiceNo(request.getInvoiceNo());
         
         String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         
@@ -108,7 +107,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         	
         	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
         	
-        	PaymentNotificationRawLog rawlog =  paymentNotificationEJB.findLastRawLogByInvoiceNo(invoiceNo);
+        	PaymentNotificationRawLog rawlog =  findLastRawLogByInvoiceNo(invoiceNo);
             String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists,systemMsg);
         	
@@ -118,4 +117,25 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		return invoiceDTO;
 	}
 
+	
+	@Override
+	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo) {
+		PaymentNotificationRawLog rec = null;
+		
+		try{
+			
+			Query qry = em.createQuery("from PaymentNotificationRawLog pnrl WHERE pnrl.invoiceNo = :invoiceNo order by timeStamp desc");
+			qry.setParameter("invoiceNo", invoiceNo);
+			qry.setFirstResult(0);
+			qry.setMaxResults(1);
+			rec = (PaymentNotificationRawLog) qry.getSingleResult();
+			
+		}catch(NoResultException e){
+			logger.warn("no payment notification");
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		
+		return rec;
+	}
 }
