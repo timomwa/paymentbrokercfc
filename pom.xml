@@ -21,13 +21,13 @@
 			<id>jboss-releases</id>
 			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
 		</repository>
-		
+
 		<repository>
 			<id>thirdparty-releases</id>
 			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
 		</repository>
-		
-		
+
+
 
 	</repositories>
 
@@ -98,20 +98,26 @@
 			<version>4.0.1.Final</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
 			<version>3.4.0.GA</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/../lib/hibernate-annotations.jar</systemPath>
 		</dependency>
+
+		<!--dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-annotations</artifactId> 
+			<version>3.4.0.GA</version> <scope>system</scope> <systemPath>${basedir}/../lib/hibernate-annotations.jar</systemPath> 
+			</dependency -->
+		<!--dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-validator</artifactId> 
+			<version>3.1.0.GA</version> <scope>system</scope> <systemPath>${basedir}/../lib/hibernate-validator.jar</systemPath> 
+			</dependency -->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>3.1.0.GA</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/../lib/hibernate-validator.jar</systemPath>
 		</dependency>
+
 
 		<!--dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-validator</artifactId> 
 			<version>3.1.0.GA</version> <scope>system</scope> <systemPath>${basedir}/../lib/spring.jar</systemPath> 
@@ -220,7 +226,7 @@
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
-			<!--scope>provided</scope-->
+			<!--scope>provided</scope -->
 		</dependency>
 
 
@@ -238,39 +244,39 @@
 			<artifactId>jboss-ejb3-ext-api</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.jasypt/jasypt-hibernate3 -->
 		<dependency>
-		    <groupId>org.jasypt</groupId>
-		    <artifactId>jasypt-hibernate3</artifactId>
-		    <version>1.9.0</version>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-hibernate3</artifactId>
+			<version>1.9.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/gnu-getopt/getopt -->
 		<dependency>
-		    <groupId>gnu-getopt</groupId>
-		    <artifactId>getopt</artifactId>
-		    <version>1.0.13</version>
-		    <scope>provided</scope>
+			<groupId>gnu-getopt</groupId>
+			<artifactId>getopt</artifactId>
+			<version>1.0.13</version>
+			<scope>provided</scope>
 		</dependency>
-				
+
 		<!-- https://mvnrepository.com/artifact/org.jboss.ws/jbossws-spi -->
 		<dependency>
-		    <groupId>org.jboss.ws</groupId>
-		    <artifactId>jbossws-spi</artifactId>
-		    <version>1.4.0.GA</version>
-		    <scope>provided</scope>
+			<groupId>org.jboss.ws</groupId>
+			<artifactId>jbossws-spi</artifactId>
+			<version>1.4.0.GA</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.axis/axis -->
 		<dependency>
-		    <groupId>org.apache.axis</groupId>
-		    <artifactId>axis</artifactId>
-		    <version>1.4</version>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.4</version>
 		</dependency>
-		
-			
-	
+
+
+
 
 	</dependencies>
 
