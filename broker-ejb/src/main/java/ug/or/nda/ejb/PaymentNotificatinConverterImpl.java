@@ -36,7 +36,8 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 		pmtNotification.setPaymentMode(paymentNotification.getPaymentMode());
 		pmtNotification.setTransactionDate(paymentNotification.getTransactionDate());
 		pmtNotification.setTransactionRef(paymentNotification.getTransactionRef());
-		
+		pmtNotification.setStatus( paymentNotification.getStatus() );
+		pmtNotification.setId( paymentNotification.getId() );
 		return pmtNotification;
 	}
 	
@@ -103,7 +104,8 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 		dto.setPaymentMode( paymentNotif.getPaymentMode() );
 		dto.setTransactionDate( paymentNotif.getTransactionDate() );
 		dto.setTransactionRef(paymentNotif.getTransactionRef() );
-		
+		dto.setStatus( paymentNotif.getStatus() );
+		dto.setId( paymentNotif.getId() );
 		return dto;
 	}
 }

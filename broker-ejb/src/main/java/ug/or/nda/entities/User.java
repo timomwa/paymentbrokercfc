@@ -21,7 +21,7 @@ public class User extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = -5783143509751367866L;
 
-	@Column(name="username", nullable=false)
+	@Column(name="username", nullable=false, unique=true)
 	private String username;
 	
 	@Column(name="pwdhash")

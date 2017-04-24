@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum AccountStatus {
 	
-	NEW(0L),ACTIVE(1L),WAITING_ACTIVATION(2L),SUSPENDED(3L),DELETED(4L);
+	NEW(0L),ACTIVE(1L),WAITING_ACTIVATION(2L),SUSPENDED(3L),DELETED(4L),REQUIRES_PASSWORD_CHANGE(4L);
 	
 	private AccountStatus(Long code){
 		this.code = code;

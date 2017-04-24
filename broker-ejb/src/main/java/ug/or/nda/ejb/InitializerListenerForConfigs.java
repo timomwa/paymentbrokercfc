@@ -17,6 +17,8 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 	public static PooledPBEStringEncryptor db_encryptor;
 	public static PooledStringDigester password_digestor;
 	private static final String password_ = "_kTheRestlessGeek1985!";
+	public static String enckey = "Bar12345Bar12345"; // 128 bit key
+	public static String encInitVector = "RandomInitVector"; // 16 bytes IV
 
 	private Logger logger = Logger.getLogger(getClass());
 	
@@ -33,8 +35,16 @@ public class InitializerListenerForConfigs implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent servletcontext) {
 		try{
+			try{
+				enckey = (String) servletcontext.getServletContext().getInitParameter("enckey");
+				encInitVector = (String) servletcontext.getServletContext().getInitParameter("encInitVector");
+			}catch(Exception e){
+				logger.error(e.getMessage(), e);
+			}
+			
 			logger.info("\n\n\n\t\t\t  *** Initializing encryptor ***** \n\n");
 			initEncryptors();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

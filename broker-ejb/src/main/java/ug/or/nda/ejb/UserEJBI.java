@@ -8,4 +8,6 @@ public interface UserEJBI {
 
 	public User save(User user) throws Exception;
 
+	public void initAdmin(String token);
+
 }

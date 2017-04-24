@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlType;
 
+import ug.or.nda.constant.Status;
+
 @XmlType(name="paymentNotification", namespace="http://service.nda.or.ug")
 public class PaymentNotificationDTO implements Serializable {
 
@@ -12,12 +14,14 @@ public class PaymentNotificationDTO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6206981618048001460L;
+	private Long id;
 	private String invoiceNo;
 	private Double amount;
 	private String currencyCode;
 	private String transactionRef;
 	private Date transactionDate;
 	private String paymentMode;
+	private Status status;
 	
 	public String getInvoiceNo() {
 		return invoiceNo;
@@ -55,11 +59,25 @@ public class PaymentNotificationDTO implements Serializable {
 	public void setPaymentMode(String paymentMode) {
 		this.paymentMode = paymentMode;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
-		return "\n\nPaymentNotification [\n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tamount=" + amount
-				+ ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\ttransactionRef=" + transactionRef
-				+ ", \n\t\ttransactionDate=" + transactionDate + ", \n\t\tpaymentMode=" + paymentMode + "\n]\n\n";
+		return "\n\nPaymentNotificationDTO [\n\t\tid=" + id + ", \n\t\tinvoiceNo=" + invoiceNo + ", \n\t\tamount="
+				+ amount + ", \n\t\tcurrencyCode=" + currencyCode + ", \n\t\ttransactionRef=" + transactionRef
+				+ ", \n\t\ttransactionDate=" + transactionDate + ", \n\t\tpaymentMode=" + paymentMode
+				+ ", \n\t\tstatus=" + status + "\n]\n\n";
 	}
+	
 
 }
