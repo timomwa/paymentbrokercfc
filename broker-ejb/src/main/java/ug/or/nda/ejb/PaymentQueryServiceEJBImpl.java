@@ -17,7 +17,6 @@ import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRawLogDTO;
 import ug.or.nda.dto.QueryDTO;
-import ug.or.nda.entities.Invoice;
 import ug.or.nda.entities.PaymentNotification;
 import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
