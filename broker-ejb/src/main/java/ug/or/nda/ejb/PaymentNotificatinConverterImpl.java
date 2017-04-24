@@ -1,8 +1,10 @@
 package ug.or.nda.ejb;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -78,5 +80,30 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 		rawLog.setInvoiceNo( paymentNotification.getInvoiceNo() );
 		rawLog.setPayload( paymentNotification.toString() );
 		return rawLog;
+	}
+
+	@Override
+	public List<PaymentNotificationDTO> convert(List<PaymentNotification> paymentnotifs) {
+		List<PaymentNotificationDTO> dtos = new ArrayList<PaymentNotificationDTO>();
+		if(paymentnotifs==null || paymentnotifs.isEmpty())
+			return dtos;
+		for(PaymentNotification paymentNotif : paymentnotifs)
+			dtos.add( convertFromEntity(paymentNotif) );
+		return dtos;
+	}
+
+	@Override
+	public PaymentNotificationDTO convertFromEntity(PaymentNotification paymentNotif) {
+		if(paymentNotif==null)
+			return null;
+		PaymentNotificationDTO dto = new PaymentNotificationDTO();
+		dto.setAmount(paymentNotif.getAmount() );
+		dto.setCurrencyCode( paymentNotif.getCurrencyCode() );
+		dto.setInvoiceNo( paymentNotif.getInvoiceNo() );
+		dto.setPaymentMode( paymentNotif.getPaymentMode() );
+		dto.setTransactionDate( paymentNotif.getTransactionDate() );
+		dto.setTransactionRef(paymentNotif.getTransactionRef() );
+		
+		return dto;
 	}
 }

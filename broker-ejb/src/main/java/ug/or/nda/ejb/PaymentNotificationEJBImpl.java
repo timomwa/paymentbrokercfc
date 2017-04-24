@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -23,6 +24,7 @@ import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.dto.PaymentNotificationResponseDTO;
+import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.PaymentNotification;
 import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
@@ -30,6 +32,7 @@ import ug.or.nda.exceptions.InvalidInvoiceException;
 import ug.or.nda.wsi.InvoiceStatus;
 
 @Stateless
+@Remote
 public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	
 	public static final String CALLER_NOT_ALLOWED = "BE401";//Broker exception Error 401 - Unauthorized
@@ -46,6 +49,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	
 	@EJB
 	private PaymentPushEJBI paymentPushEJB;
+	
 	
 	@EJB
 	private IPWhitelistEJBI ipWhitelistEJB;
@@ -210,6 +214,67 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			qry.setParameter("earliestRetryTime", new Date());
 			qry.setMaxResults(limit);
 			payments = qry.getResultList();
+			
+		}catch(NoResultException re){
+		
+			logger.warn("no pamyments");
+			
+		}catch(Exception e){
+			
+			logger.error(e.getMessage(), e);
+		
+		}
+		
+		return payments;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PaymentNotification> query(QueryDTO queryDTO) {
+		
+		List<PaymentNotification> payments = new ArrayList<PaymentNotification>();
+		
+		try{
+			
+			String hql = "from PaymentNotification WHERE id > 0";
+			
+			if(queryDTO.getQuery()!=null && !queryDTO.getQuery().isEmpty()){
+				hql = hql + " AND ( lower(invoiceNo) like lower(:invQuery)  "
+						+ "			OR "
+						+ "        lower(transactionRef) like lower(:invQuery) ) ";
+			}
+			
+			if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()!=null){
+				hql = hql+" AND date(recTimeStamp) between date(:fromTime) and date(:toTime)";
+			}else if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()==null){
+				hql = hql+" AND date(recTimeStamp) >= date(:thisTS)";
+				queryDTO.setDateTo(new Date());
+			}else if(queryDTO.getDateTo()!=null && queryDTO.getDateFrom()==null){
+				hql = hql+" AND date(recTimeStamp) <= date(:thisTS) ";
+			}
+			hql = hql + " ORDER BY recTimeStamp desc";
+			
+			Query preparedQuery = em.createQuery(hql);
+			if(queryDTO.getQuery()!=null && !queryDTO.getQuery().isEmpty()){
+				preparedQuery.setParameter("invQuery", "%"+queryDTO.getQuery()+"%");
+			}
+			
+			if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()!=null){
+				preparedQuery.setParameter("fromTime", queryDTO.getDateFrom());
+				preparedQuery.setParameter("toTime", queryDTO.getDateTo());
+			}else if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()==null){
+				preparedQuery.setParameter("thisTS", queryDTO.getDateFrom());
+			}else if(queryDTO.getDateTo()!=null && queryDTO.getDateFrom()==null){
+				preparedQuery.setParameter("thisTS", queryDTO.getDateTo());
+			} 
+			
+			if(queryDTO.getStart()!=null && queryDTO.getStart().compareTo(0)>0)
+				preparedQuery.setMaxResults(queryDTO.getStart());
+			if(queryDTO.getLimit()!=null && queryDTO.getLimit().compareTo(0)>0)
+				preparedQuery.setMaxResults(queryDTO.getLimit());
+			payments = preparedQuery.getResultList();
 			
 		}catch(NoResultException re){
 		

@@ -2,6 +2,7 @@ package ug.or.nda.ejb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -17,6 +18,8 @@ import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.InvoiceValidationRequestDTO;
 import ug.or.nda.dto.InvoiceValidationResponseDTO;
+import ug.or.nda.dto.QueryDTO;
+import ug.or.nda.entities.Invoice;
 import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.services.InvoiceServiceService;
@@ -41,6 +44,9 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	
 	@EJB
 	private PaymentPushEJBI paymentPushEJB;
+	
+	@EJB
+	private PaymentNotificationRawLogEJBI paymentNotificationRawLogEJB;
 	
 	
 
@@ -71,7 +77,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         
         boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
         
-        PaymentNotificationRawLog rawlog =  findLastRawLogByInvoiceNo(request.getInvoiceNo());
+        PaymentNotificationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(request.getInvoiceNo());
         
         String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         
@@ -113,7 +119,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         	
         	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
         	
-        	PaymentNotificationRawLog rawlog =  findLastRawLogByInvoiceNo(invoiceNo);
+        	PaymentNotificationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(invoiceNo);
             String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists,systemMsg);
         	
@@ -124,24 +130,6 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	}
 
 	
-	@Override
-	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo) {
-		PaymentNotificationRawLog rec = null;
-		
-		try{
-			
-			Query qry = em.createQuery("from PaymentNotificationRawLog pnrl WHERE pnrl.invoiceNo = :invoiceNo order by timeStamp desc");
-			qry.setParameter("invoiceNo", invoiceNo);
-			qry.setFirstResult(0);
-			qry.setMaxResults(1);
-			rec = (PaymentNotificationRawLog) qry.getSingleResult();
-			
-		}catch(NoResultException e){
-			logger.warn("no payment notification");
-		}catch(Exception e){
-			logger.error(e.getMessage(), e);
-		}
-		
-		return rec;
-	}
+
+	
 }
