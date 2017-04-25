@@ -38,7 +38,6 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	public WhitelistResponse process(WhitelistRequest req) {
 		
 		WhitelistResponse resp = new WhitelistResponse();
-		logger.info(req);
 		logger.info("\n\n\n::: ipWLDao -->  "+ipWLDao+" \n\n");
 		
 		try{
@@ -175,6 +174,7 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 
 	@Override
 	public boolean isWhitelisted(String ipAddress) {
+		logger.info(" ------ "+ipAddress+"-------\n\n");
 		IPAddressWhitelist entry = findEntry(ipAddress);
 		return (entry!=null && entry.getEnabled());
 	}
