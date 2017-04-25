@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import ug.or.nda.constant.Status;
 
-@XmlType(name="paymentNotification", namespace="http://service.nda.or.ug")
+@XmlType(name="paymentNotificationDTO", namespace="http://service.nda.or.ug")
 public class PaymentNotificationDTO implements Serializable {
 
 	/**

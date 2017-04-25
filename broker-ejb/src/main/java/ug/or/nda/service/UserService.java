@@ -50,7 +50,8 @@ public class UserService {
 			logger.error(TerminalColorCodes.ANSI_RED+ "\n\n\n\n\n ERROR, host dissalowed\n\n\n\n\n"+TerminalColorCodes.ANSI_RESET);
 			return false;
 		}
-		userEJB.initAdmin( encryptionEJB.hashPassword("admin", "Admin123#@!") );
+		userEJB.initAdmin( encryptionEJB.hashPassword("Admin123#@!", "admin") );
+		return true;
 	}
 	
 	@WebMethod

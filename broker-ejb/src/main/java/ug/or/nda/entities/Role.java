@@ -14,7 +14,7 @@ public class Role extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 3817830703329744557L;
 	
-	@Column(name="name")
+	@Column(name="name", unique=true, nullable=false)
 	private String name;
 
 	public String getName() {

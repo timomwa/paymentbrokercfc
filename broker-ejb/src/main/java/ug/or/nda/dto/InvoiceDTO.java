@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import ug.or.nda.wsi.InvoiceStatus;
 
 
-@XmlType(name="invoice", namespace="http://service.nda.or.ug")
+@XmlType(name="invoiceDTO", namespace="http://service.nda.or.ug")
 public class InvoiceDTO implements Serializable {
 
 	private static final long serialVersionUID = -6044267411024241400L;

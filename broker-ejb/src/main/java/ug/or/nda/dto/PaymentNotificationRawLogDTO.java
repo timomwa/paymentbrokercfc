@@ -3,8 +3,11 @@ package ug.or.nda.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlType;
+
 import ug.or.nda.constant.Status;
 
+@XmlType(name="paymentNotificationRawLogDTO", namespace="http://service.nda.or.ug")
 public class PaymentNotificationRawLogDTO implements Serializable {
 
 	/**

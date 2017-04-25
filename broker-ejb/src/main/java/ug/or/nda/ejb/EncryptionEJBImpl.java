@@ -18,7 +18,7 @@ public class EncryptionEJBImpl implements EncryptionEJBI {
 	
 	public final int DEFAULT_ITERATIONS = 5000;
 	public final int DEFAULT_KEYLENGTH = 200;
-	private String DEFAULT_ALGORITHM = "PBKDF2WithHmacSHA512";
+	private String DEFAULT_ALGORITHM = "PBEWithMD5AndTripleDES";//"PBKDF2WithHmacSHA512";
 	
 	@Override
 	public String hashPassword(String password, String salt) {
