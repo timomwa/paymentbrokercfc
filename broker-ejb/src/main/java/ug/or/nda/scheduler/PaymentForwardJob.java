@@ -15,7 +15,7 @@ import ug.or.nda.ejb.PaymentNotificationEJBI;
 
 @MessageDriven
 (activationConfig =
-{@ActivationConfigProperty(propertyName = "cronTrigger", propertyValue = "* */30 * * * ?")})
+{@ActivationConfigProperty(propertyName = "cronTrigger", propertyValue = "* */1 * * * ?")})
 @ResourceAdapter("quartz-ra.rar") 
 public class PaymentForwardJob  implements Job {
 	
