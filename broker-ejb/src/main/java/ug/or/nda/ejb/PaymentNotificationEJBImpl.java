@@ -100,7 +100,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			if(invoice==null)
 				throw new InvalidInvoiceException("Invoice with the number \""+notification.getInvoiceNo()+"\" Not found!, or NDA system down");
 			
-			if(!invoice.getCurrencyCode().equalsIgnoreCase( invoice.getCurrencyCode()  ))
+			if(!invoice.getCurrencyCode().equalsIgnoreCase( request.getPaymentNotification().getCurrencyCode()  ))
 				throw new InvalidInvoiceException("Invoice Rejected because currency codes don't match \""+invoice.getStatus()+"\".");
 			
 			if(invoice.getStatus()==InvoiceStatus.PAID || invoice.getStatus()==InvoiceStatus.EXPIRED)
