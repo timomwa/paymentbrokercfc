@@ -48,6 +48,8 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	@EJB
 	private PaymentNotificationRawLogEJBI paymentNotificationRawLogEJB;
 	
+	public static String BASE_WS_URL = "https://ndaendopoint";
+	
 	
 
 	@Override
@@ -58,7 +60,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		logger.info(request);
 		
 		URL wsdlLocation = null;
-		String endpoint = "http://ndaendopoint/ndamisws/invoice/validation/v1.0";
+		String endpoint = BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {
@@ -92,7 +94,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		InvoiceDTO invoiceDTO = null;
 		
 		URL wsdlLocation = null;
-		String endpoint = "http://ndaendopoint/ndamisws/invoice/validation/v1.0";
+		String endpoint = BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {

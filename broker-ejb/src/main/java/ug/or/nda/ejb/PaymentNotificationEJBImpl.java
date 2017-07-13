@@ -81,7 +81,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			if(!hostAllowed)
 				throw new BrokerException("Error: Forbidden - "+CALLER_NOT_ALLOWED);
 			
-			PaymentNotification notification = paymentNotificationConverter.convert(request.getPaymentNotification());
+			PaymentNotification notification = paymentNotificationConverter.convert(request);
 			
 			notificationRawLog = paymentNotificationConverter.convertToRawLog(notification);
 			

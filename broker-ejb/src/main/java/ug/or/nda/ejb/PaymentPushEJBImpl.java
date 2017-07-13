@@ -43,11 +43,12 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	
 	private PaymentWebService paymentport;
 	
+	
 	@PostConstruct
 	public void init(){
 		try{
 			URL wsdlLocation = null;
-			String endpoint = "http://ndaendopoint/ndamisws/invoice/payment/v1.0";
+			String endpoint = BASE_WS_URL.concat("/ndamisws/invoice/payment/v1.0");
 			try {
 				wsdlLocation = new URL(endpoint+"?wsdl");
 			} catch (MalformedURLException e1) {

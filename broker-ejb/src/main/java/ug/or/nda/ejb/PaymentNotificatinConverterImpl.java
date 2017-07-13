@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
+import ug.or.nda.dto.RequestHeaderDTO;
 import ug.or.nda.entities.PaymentNotification;
 import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
@@ -107,5 +108,15 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 		dto.setStatus( paymentNotif.getStatus() );
 		dto.setId( paymentNotif.getId() );
 		return dto;
+	}
+
+	@Override
+	public PaymentNotification convert(PaymentNotificationRequestDTO request) {
+		PaymentNotification paymentNotification = convert(request);
+		RequestHeaderDTO requestHeader = request.getRequestHeader();
+		if(requestHeader!=null){
+			paymentNotification.setSystemID(  requestHeader.getSystemID() );
+		}
+		return paymentNotification;
 	}
 }

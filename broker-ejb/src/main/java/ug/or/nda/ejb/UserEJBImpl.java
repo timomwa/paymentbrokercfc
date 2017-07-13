@@ -87,6 +87,7 @@ public class UserEJBImpl implements UserEJBI {
 				user = save(user);
 				
 				addRole(user,"superadmin");
+				addRole(user,"admin");
 				addRole(user,"user");
 			}
 		

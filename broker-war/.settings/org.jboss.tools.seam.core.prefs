@@ -1,0 +1,14 @@
+action.package=main.ug
+action.sources=/broker-ejb/src
+eclipse.preferences.version=1
+model.package=main.ug
+model.sources=/broker-ejb/src
+seam.ejb.project=broker-ejb
+seam.project.connection.profile=DefaultDS
+seam.project.deployment.type=ear
+seam.project.settings.version=1.1
+seam.project.web.root.folder=/broker-war/src/main/webapp
+seam.test.creating=false
+seam.test.project=broker-war
+test.package=org.domain.brokerwar.test
+test.sources=/broker-war/src/main/webapp/WEB-INF/classes
