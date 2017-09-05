@@ -1,9 +1,13 @@
 package ug.or.nda.service;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +26,8 @@ public class InvoiceService  {
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
+	@Resource
+	private WebServiceContext wsContext; 
 	
 	
 	@EJB
@@ -37,7 +43,7 @@ public class InvoiceService  {
 		
 		try{
 		
-			response = invoiceService.validateInvoice(invoiceValidationReq);
+			response = invoiceService.validateInvoice(invoiceValidationReq, getIPAddress());
 	
 		}catch(Exception e){
 		
@@ -46,6 +52,18 @@ public class InvoiceService  {
 		}
 		
 		return response;
+	}
+	
+	
+	private String getIPAddress() {
+		try{
+			MessageContext mc = wsContext.getMessageContext();
+		    HttpServletRequest req = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST); 
+		    return req.getRemoteAddr();
+		}catch(Exception e){
+			logger.error(e.getMessage(), e);
+		}
+		return "1.1.1.1";//Fake IP
 	}
 	
 }

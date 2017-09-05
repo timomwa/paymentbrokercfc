@@ -15,7 +15,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-
+import ug.or.nda.constant.TerminalColorCodes;
 import ug.or.nda.dao.IPAddressWhitelistDAOI;
 import ug.or.nda.dto.Action;
 import ug.or.nda.dto.WhitelistRequest;
@@ -26,6 +26,8 @@ import ug.or.nda.exceptions.WhitelistingException;
 @Stateless
 public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 	
+	private static final String ALLOW_ALL_FLAG = "*";
+
 	private Logger logger = Logger.getLogger(getClass());
 	
 	@Inject
@@ -174,7 +176,11 @@ public class IPWhitelistEJBImpl implements IPWhitelistEJBI {
 
 	@Override
 	public boolean isWhitelisted(String ipAddress) {
-		logger.info(" ------ "+ipAddress+"-------\n\n");
+		logger.info("\n\n ------ "+ipAddress+"-------\n\n");
+		if(findEntry(ALLOW_ALL_FLAG)!=null){
+			logger.info("\n\n ------ \t"+TerminalColorCodes.ANSI_RED_BACKGROUND+TerminalColorCodes.ANSI_WHITE+"We're allowing everyone to hit us!! Consider removing the ALLOW_ALL_FLAG record in the configuration-------"+TerminalColorCodes.RESET_ALL+"\n\n");
+			return true;
+		}
 		IPAddressWhitelist entry = findEntry(ipAddress);
 		return (entry!=null && entry.getEnabled());
 	}

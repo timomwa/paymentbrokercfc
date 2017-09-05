@@ -17,7 +17,7 @@ import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.dto.RequestHeaderDTO;
 import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.PaymentNotificationRawLog;
+import ug.or.nda.entities.InvoiceValidationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.ws.PaymentNotificationRequest;
 import ug.or.nda.ws.RequestHeader;
@@ -77,8 +77,8 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 	}
 
 	@Override
-	public PaymentNotificationRawLog convertToRawLog(PaymentNotification paymentNotification) {
-		PaymentNotificationRawLog rawLog = new PaymentNotificationRawLog();
+	public InvoiceValidationRawLog convertToRawLog(PaymentNotification paymentNotification) {
+		InvoiceValidationRawLog rawLog = new InvoiceValidationRawLog();
 		rawLog.setInvoiceNo( paymentNotification.getInvoiceNo() );
 		rawLog.setPayload( paymentNotification.toString() );
 		return rawLog;

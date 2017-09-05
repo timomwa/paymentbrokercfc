@@ -1,7 +1,7 @@
 package ug.or.nda.dao;
 
-import ug.or.nda.entities.PaymentNotificationRawLog;
+import ug.or.nda.entities.InvoiceValidationRawLog;
 
-public interface PaymentNotificationRawLogDAOI extends GenericDAOI<PaymentNotificationRawLog, Long> {
+public interface PaymentNotificationRawLogDAOI extends GenericDAOI<InvoiceValidationRawLog, Long> {
 
 }

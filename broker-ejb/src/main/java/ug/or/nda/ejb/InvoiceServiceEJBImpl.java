@@ -15,12 +15,16 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 
 import ug.or.nda.constant.AppPropertyHolder;
+import ug.or.nda.constant.ResponseCode;
+import ug.or.nda.constant.ServiceMessageCodes;
+import ug.or.nda.constant.Status;
+import ug.or.nda.constant.TerminalColorCodes;
 import ug.or.nda.dto.InvoiceDTO;
 import ug.or.nda.dto.InvoiceValidationRequestDTO;
 import ug.or.nda.dto.InvoiceValidationResponseDTO;
 import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.Invoice;
-import ug.or.nda.entities.PaymentNotificationRawLog;
+import ug.or.nda.entities.InvoiceValidationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.services.InvoiceServiceService;
 import ug.or.nda.services.ValidationService;
@@ -46,46 +50,112 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	private PaymentPushEJBI paymentPushEJB;
 	
 	@EJB
+	private IPWhitelistEJBI ipWhitelistEJB;
+	
+	@EJB
 	private PaymentNotificationRawLogEJBI paymentNotificationRawLogEJB;
 	
-	public static String BASE_WS_URL = "https://ndaendopoint";
 	
 	
 
 	@Override
-	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO request) throws BrokerException{
+	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO request, String ipAddress) throws BrokerException{
 		
-		InvoiceValidationResponseDTO validationReq = new  InvoiceValidationResponseDTO();
 		
-		logger.info(request);
+		InvoiceValidationRawLog invoiceValidationLog= new InvoiceValidationRawLog();
+		InvoiceValidationResponseDTO validationResp = new  InvoiceValidationResponseDTO();
+		Status status = Status.JUST_IN;
+		String systemMsg = "";
 		
-		URL wsdlLocation = null;
-		String endpoint = BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
-		try {
-			wsdlLocation = new URL(endpoint+"?wsdl");
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
+		try{
+			
+			invoiceValidationLog.setSourcehost(ipAddress);
+			invoiceValidationLog.setPayload( request.toString()  );
+			invoiceValidationLog.setStatus( status );
+			invoiceValidationLog.setSystemID( request.getRequestHeader().getSystemID() );
+			invoiceValidationLog.setInvoiceNo( request.getInvoiceNo() );
+			logger.info(TerminalColorCodes.ANSI_BLUE + " BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request+TerminalColorCodes.ANSI_RESET);
+			
+			boolean hostAllowed = ipWhitelistEJB.isWhitelisted(ipAddress);
+
+			logger.info(request);
+			
+			if(!hostAllowed)
+				throw new BrokerException("Error: Forbidden (Caller not allowed. Kindly ask admin to whitelist you!)- "+ServiceMessageCodes.CALLER_NOT_ALLOWED);
+			
+			URL wsdlLocation = null;
+			String endpoint = AppPropertyHolder.BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
+			
+			try {
+				wsdlLocation = new URL(endpoint+"?wsdl");
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+		
+			QName serviceName = new QName("http://wsi.nda.or.ug","invoiceWebService");
+			
+			InvoiceWebService service1 = new InvoiceWebService(wsdlLocation,serviceName);
+			ValidationWebService port1 = service1.getValidationWebServicePort();
+	        InvoiceValidationRequest req = invoiceValidatorReqConverter.convert(request);
+	        
+	        InvoiceValidationResponse resp  = port1.validateInvoice(req);
+	        logger.info("<<<<<< [Server Response] " + resp);
+	        
+	        boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
+	        
+	        //InvoiceValidationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(request.getInvoiceNo());
+	        
+	        systemMsg = Status.SUCCESS.name();//  (rawlog!=null) ? rawlog.getSystemMsg() : "";
+	        status = Status.SUCCESS;
+	        
+	        validationResp =  invoiceValidatorReqConverter.convert(resp,paymentExists, systemMsg);
+	        
+		}catch(BrokerException be){
+			
+			systemMsg = be.getMessage();
+			status = Status.FAILED_TEMPORARILY;
+			
+			logger.error(be.getMessage(), be);
+			
+			validationResp.setStatusCode( ResponseCode.ERROR.getCode() );
+			validationResp.setStatusMessage( systemMsg );
+			
+	        
+		}catch(Exception e){
+			
+			systemMsg = "Problem occurred. Try again later.";
+			status = Status.FAILED_PERMANENTLY;
+			
+			logger.error(e.getMessage(), e);
+			
+			validationResp.setStatusCode( ResponseCode.ERROR.getCode() );
+			validationResp.setStatusMessage( ResponseCode.ERROR.name() );
+			
+			invoiceValidationLog.setSystemMsg( "A problem occurred: "+e.getMessage() );
+	        invoiceValidationLog.setStatus( Status.FAILED_PERMANENTLY );
+		
+		}finally{
+			
+			try{
+				
+				if(invoiceValidationLog!=null){
+					invoiceValidationLog.setSystemMsg( systemMsg );
+			        invoiceValidationLog.setStatus( status );
+			        invoiceValidationLog = save( invoiceValidationLog);
+				}
+				
+			}catch(Exception e){
+				logger.error(e.getMessage(), e);
+			}
+			
 		}
+        
+        return validationResp;
+	}
 	
-		QName serviceName = new QName("http://wsi.nda.or.ug","invoiceWebService");
-		
-		InvoiceWebService service1 = new InvoiceWebService(wsdlLocation,serviceName);
-		ValidationWebService port1 = service1.getValidationWebServicePort();
-        InvoiceValidationRequest req = invoiceValidatorReqConverter.convert(request);
-        
-        
-        InvoiceValidationResponse resp  = port1.validateInvoice(req);
-        logger.info("<<<<<< [Server Response] " + resp);
-        
-        boolean paymentExists = paymentPushEJB.isInQueue(request.getInvoiceNo());
-        
-        PaymentNotificationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(request.getInvoiceNo());
-        
-        String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
-        
-        validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists, systemMsg);
-        
-        return validationReq;
+	@Override
+	public InvoiceValidationRawLog save(InvoiceValidationRawLog notificationRawLog) throws Exception{
+		return em.merge(notificationRawLog);
 	}
 	
 	@Override
@@ -94,7 +164,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		InvoiceDTO invoiceDTO = null;
 		
 		URL wsdlLocation = null;
-		String endpoint = BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
+		String endpoint = AppPropertyHolder.BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {
@@ -121,7 +191,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         	
         	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
         	
-        	PaymentNotificationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(invoiceNo);
+        	InvoiceValidationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(invoiceNo);
             String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists,systemMsg);
         	

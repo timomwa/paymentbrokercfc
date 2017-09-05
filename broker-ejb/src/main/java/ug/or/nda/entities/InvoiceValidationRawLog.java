@@ -17,14 +17,15 @@ import org.hibernate.annotations.Index;
 import ug.or.nda.constant.Status;
 
 @Entity
-@Table(name="payment_notification_raw_log")
-public class PaymentNotificationRawLog extends AbstractEntity {
+@Table(name="invoice_validation_raw_log")
+public class InvoiceValidationRawLog extends AbstractEntity {
+	
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4450592225692772998L;
-	
+	private static final long serialVersionUID = 619348540384330L;
+
 	@Column(name="payload", length=4010, nullable=false)
 	private String payload;
 	

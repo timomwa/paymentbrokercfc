@@ -18,7 +18,7 @@ import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRawLogDTO;
 import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.PaymentNotificationRawLog;
+import ug.or.nda.entities.InvoiceValidationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 
 @Stateless
@@ -83,7 +83,7 @@ public class PaymentQueryServiceEJBImpl implements PaymentQueryServiceEJBI {
 	public List<PaymentNotificationRawLogDTO> listPaymentRawLogs(QueryDTO queryDTO) {
 		logger.info("<<<<< Incoming query << "+TerminalColorCodes.ANSI_CYAN + queryDTO.toString() + TerminalColorCodes.ANSI_RESET );
 		List<PaymentNotificationRawLogDTO> paymentNotiLogfDTO = new ArrayList<PaymentNotificationRawLogDTO>();
-		List<PaymentNotificationRawLog>  notifications  = paymentNotifRawLogEJB.query(queryDTO);
+		List<InvoiceValidationRawLog>  notifications  = paymentNotifRawLogEJB.query(queryDTO);
 		if(notifications!=null && !notifications.isEmpty())
 			paymentNotiLogfDTO = paymentnotifLogConverterEJB.convert(notifications);
 		return paymentNotiLogfDTO;

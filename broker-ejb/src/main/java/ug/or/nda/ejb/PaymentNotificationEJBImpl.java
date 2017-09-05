@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.constant.ResponseCode;
+import ug.or.nda.constant.ServiceMessageCodes;
 import ug.or.nda.constant.Status;
 import ug.or.nda.constant.TerminalColorCodes;
 import ug.or.nda.dto.InvoiceDTO;
@@ -26,7 +27,7 @@ import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.dto.PaymentNotificationResponseDTO;
 import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.PaymentNotificationRawLog;
+import ug.or.nda.entities.InvoiceValidationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.exceptions.InvalidInvoiceException;
 import ug.or.nda.wsi.InvoiceStatus;
@@ -35,9 +36,6 @@ import ug.or.nda.wsi.InvoiceStatus;
 @Remote
 public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	
-	public static final String CALLER_NOT_ALLOWED = "BE401";//Broker exception Error 401 - Unauthorized
-
-
 	private Logger logger = Logger.getLogger(getClass());
 	
 	
@@ -67,25 +65,27 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	public PaymentNotificationResponseDTO paymentNotification(PaymentNotificationRequestDTO request, String ipAddress) {
 		
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
-		
 		logger.info(TerminalColorCodes.ANSI_BLUE + " BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request+TerminalColorCodes.ANSI_RESET);
 		
-		PaymentNotificationRawLog notificationRawLog = null;
+		InvoiceValidationRawLog notificationRawLog = null;
+		Status status = Status.JUST_IN;
 		
 		String systemMsg = "";
+		
 		
 		try {
 			
 			boolean hostAllowed = ipWhitelistEJB.isWhitelisted(ipAddress);
 			
 			if(!hostAllowed)
-				throw new BrokerException("Error: Forbidden - "+CALLER_NOT_ALLOWED);
+				throw new BrokerException("Error: Forbidden (Caller not allowed. Kindly ask admin to whitelist you!)- "+ServiceMessageCodes.CALLER_NOT_ALLOWED);
 			
 			PaymentNotification notification = paymentNotificationConverter.convert(request);
 			
 			notificationRawLog = paymentNotificationConverter.convertToRawLog(notification);
 			
 			try{
+				notificationRawLog.setStatus( status );
 				notificationRawLog.setSourcehost(ipAddress);
 				notificationRawLog.setSystemMsg(systemMsg);
 				notificationRawLog = save(notificationRawLog);
@@ -126,10 +126,12 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			response.setStatusMessage(ResponseCode.SUCCESS.name());
 			
 			systemMsg = ResponseCode.SUCCESS.name();
+			status = Status.SUCCESS;
 			
 		}catch(BrokerException be){
 			
 			systemMsg = be.getMessage();
+			status = Status.FAILED_PERMANENTLY;
 			
 			logger.error(TerminalColorCodes.ANSI_RED + be.getMessage() +TerminalColorCodes.ANSI_YELLOW+" caller being ["+ipAddress+"]"+TerminalColorCodes.ANSI_RESET);
 			
@@ -138,6 +140,8 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			
 		} catch (Exception e) {
 			systemMsg = e.getMessage();
+			status = Status.FAILED_PERMANENTLY;
+			
 			logger.error(e.getMessage(), e);
 			
 			response.setStatusCode(ResponseCode.ERROR.getCode());
@@ -146,6 +150,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		}finally{
 			try{
 				if(notificationRawLog!=null){
+					notificationRawLog.setStatus( status );
 					notificationRawLog.setSystemMsg(systemMsg);
 					notificationRawLog = save(notificationRawLog);
 				}
@@ -158,7 +163,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	}
 
 	@Override
-	public PaymentNotificationRawLog save(PaymentNotificationRawLog notificationRawLog) throws Exception{
+	public InvoiceValidationRawLog save(InvoiceValidationRawLog notificationRawLog) throws Exception{
 		return em.merge(notificationRawLog);
 	}
 
@@ -237,6 +242,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	@Override
 	public List<PaymentNotification> query(QueryDTO queryDTO) {
 		
+		logger.info( " AT QUERY --> "+queryDTO );
 		List<PaymentNotification> payments = new ArrayList<PaymentNotification>();
 		
 		try{
@@ -250,7 +256,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			}
 			
 			if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()!=null){
-				hql = hql+" AND date(recTimeStamp) between date(:fromTime) and date(:toTime)";
+				hql = hql+" AND date(recTimeStamp) between date( :fromTime ) and date( :toTime )";
 			}else if(queryDTO.getDateFrom()!=null && queryDTO.getDateTo()==null){
 				hql = hql+" AND date(recTimeStamp) >= date(:thisTS)";
 				queryDTO.setDateTo(new Date());
@@ -259,6 +265,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 			}
 			hql = hql + " ORDER BY recTimeStamp desc";
 			
+			logger.info( "\n\n\t HQL --> "+hql+" \n\n");
 			Query preparedQuery = em.createQuery(hql);
 			if(queryDTO.getQuery()!=null && !queryDTO.getQuery().isEmpty()){
 				preparedQuery.setParameter("invQuery", "%"+queryDTO.getQuery()+"%");
