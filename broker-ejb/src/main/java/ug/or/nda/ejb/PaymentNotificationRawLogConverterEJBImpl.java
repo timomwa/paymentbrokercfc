@@ -6,23 +6,23 @@ import java.util.List;
 import javax.ejb.Stateless;
 
 import ug.or.nda.dto.PaymentNotificationRawLogDTO;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 
 @Stateless
 public class PaymentNotificationRawLogConverterEJBImpl implements PaymentNotificationRawLogConverterEJBI {
 
 	@Override
-	public List<PaymentNotificationRawLogDTO> convert(List<InvoiceValidationRawLog> notifications) {
+	public List<PaymentNotificationRawLogDTO> convert(List<PaymentNotificationRawLog> notifications) {
 		List<PaymentNotificationRawLogDTO> paymentNotificationRawLog = new ArrayList<PaymentNotificationRawLogDTO>();
 		if(notifications==null || notifications.isEmpty())
 			return paymentNotificationRawLog;
 		
-		for(InvoiceValidationRawLog log  : notifications)
+		for(PaymentNotificationRawLog log  : notifications)
 			paymentNotificationRawLog.add( convert(log) );
 		return paymentNotificationRawLog;
 	}
 
-	private PaymentNotificationRawLogDTO convert(InvoiceValidationRawLog log) {
+	private PaymentNotificationRawLogDTO convert(PaymentNotificationRawLog log) {
 		PaymentNotificationRawLogDTO dto = new PaymentNotificationRawLogDTO();
 		dto.setInvoiceNo( log.getInvoiceNo() );
 		dto.setPayload( log.getPayload() );

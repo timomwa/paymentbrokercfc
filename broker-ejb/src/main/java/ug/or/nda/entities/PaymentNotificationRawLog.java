@@ -18,7 +18,7 @@ import ug.or.nda.constant.Status;
 
 @Entity
 @Table(name="payment_notification_raw_log")
-public class PaymentValidationRawLog extends AbstractEntity {
+public class PaymentNotificationRawLog extends AbstractEntity {
 
 	/**
 	 * 

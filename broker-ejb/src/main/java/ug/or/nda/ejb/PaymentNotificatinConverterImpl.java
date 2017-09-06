@@ -111,8 +111,8 @@ public class PaymentNotificatinConverterImpl implements PaymentNotificatinConver
 	}
 
 	@Override
-	public PaymentNotification convert(PaymentNotificationRequestDTO request) {
-		PaymentNotification paymentNotification = convert(request);
+	public PaymentNotification convertFromDto(PaymentNotificationRequestDTO request) throws BrokerException {
+		PaymentNotification paymentNotification = convert(request.getPaymentNotification());
 		RequestHeaderDTO requestHeader = request.getRequestHeader();
 		if(requestHeader!=null){
 			paymentNotification.setSystemID(  requestHeader.getSystemID() );

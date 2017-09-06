@@ -3,13 +3,13 @@ package ug.or.nda.ejb;
 import java.util.List;
 
 import ug.or.nda.dto.QueryDTO;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 
 public interface PaymentNotificationRawLogEJBI {
 
-	public InvoiceValidationRawLog findLastRawLogByInvoiceNo(String invoiceNo);
+	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo);
 	
-	public List<InvoiceValidationRawLog> listPaymentNotificationLogs(String invoiceNo);
+	public List<PaymentNotificationRawLog> listPaymentNotificationLogs(String invoiceNo);
 
-	public List<InvoiceValidationRawLog> query(QueryDTO queryDTO);
+	public List<PaymentNotificationRawLog> query(QueryDTO queryDTO);
 }

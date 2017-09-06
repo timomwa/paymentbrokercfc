@@ -3,10 +3,10 @@ package ug.or.nda.ejb;
 import java.util.List;
 
 import ug.or.nda.dto.PaymentNotificationRawLogDTO;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 
 public interface PaymentNotificationRawLogConverterEJBI {
 
-	public List<PaymentNotificationRawLogDTO> convert(List<InvoiceValidationRawLog> notifications);
+	public List<PaymentNotificationRawLogDTO> convert(List<PaymentNotificationRawLog> notifications);
 
 }

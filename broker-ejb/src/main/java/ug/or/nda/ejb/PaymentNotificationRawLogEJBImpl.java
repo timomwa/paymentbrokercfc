@@ -14,8 +14,7 @@ import org.apache.log4j.Logger;
 
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.dto.QueryDTO;
-import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 
 @Stateless
 public class PaymentNotificationRawLogEJBImpl implements PaymentNotificationRawLogEJBI {
@@ -26,8 +25,8 @@ private Logger logger = Logger.getLogger(getClass());
 	protected EntityManager em;
 	
 	@Override
-	public InvoiceValidationRawLog findLastRawLogByInvoiceNo(String invoiceNo) {
-		InvoiceValidationRawLog rec = null;
+	public PaymentNotificationRawLog findLastRawLogByInvoiceNo(String invoiceNo) {
+		PaymentNotificationRawLog rec = null;
 		
 		try{
 			
@@ -35,7 +34,7 @@ private Logger logger = Logger.getLogger(getClass());
 			qry.setParameter("invoiceNo", invoiceNo);
 			qry.setFirstResult(0);
 			qry.setMaxResults(1);
-			rec = (InvoiceValidationRawLog) qry.getSingleResult();
+			rec = (PaymentNotificationRawLog) qry.getSingleResult();
 			
 		}catch(NoResultException e){
 			logger.warn("no payment notification");
@@ -49,9 +48,9 @@ private Logger logger = Logger.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<InvoiceValidationRawLog> listPaymentNotificationLogs(String invoiceNo) {
+	public List<PaymentNotificationRawLog> listPaymentNotificationLogs(String invoiceNo) {
 		
-		List<InvoiceValidationRawLog> rec = null;
+		List<PaymentNotificationRawLog> rec = null;
 		try{
 			
 			Query qry = em.createQuery("from PaymentNotificationRawLog pnrl WHERE pnrl.invoiceNo = :invoiceNo order by timeStamp desc");
@@ -70,9 +69,9 @@ private Logger logger = Logger.getLogger(getClass());
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<InvoiceValidationRawLog> query(QueryDTO queryDTO) {
+	public List<PaymentNotificationRawLog> query(QueryDTO queryDTO) {
 
-		List<InvoiceValidationRawLog> payments = new ArrayList<InvoiceValidationRawLog>();
+		List<PaymentNotificationRawLog> payments = new ArrayList<PaymentNotificationRawLog>();
 		
 		try{
 			

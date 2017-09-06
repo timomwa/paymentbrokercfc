@@ -21,6 +21,6 @@ public interface PaymentNotificatinConverterI {
 	
 	public PaymentNotificationDTO convertFromEntity(PaymentNotification paymentNotif) ;
 
-	public PaymentNotification convert(PaymentNotificationRequestDTO request);
+	public PaymentNotification convertFromDto(PaymentNotificationRequestDTO request)  throws BrokerException;
 
 }
