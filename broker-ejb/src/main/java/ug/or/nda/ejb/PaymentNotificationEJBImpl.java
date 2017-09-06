@@ -27,7 +27,7 @@ import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.dto.PaymentNotificationResponseDTO;
 import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.exceptions.InvalidInvoiceException;
 import ug.or.nda.wsi.InvoiceStatus;
@@ -67,7 +67,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 		PaymentNotificationResponseDTO response = new PaymentNotificationResponseDTO();
 		logger.info(TerminalColorCodes.ANSI_BLUE + " BROKER INCOMING from ["+ipAddress+"] >>>>>>>>> "+request+TerminalColorCodes.ANSI_RESET);
 		
-		InvoiceValidationRawLog notificationRawLog = null;
+		PaymentNotificationRawLog notificationRawLog = null;
 		Status status = Status.JUST_IN;
 		
 		String systemMsg = "";
@@ -163,7 +163,7 @@ public class PaymentNotificationEJBImpl implements PaymentNotificationEJBI {
 	}
 
 	@Override
-	public InvoiceValidationRawLog save(InvoiceValidationRawLog notificationRawLog) throws Exception{
+	public PaymentNotificationRawLog save(PaymentNotificationRawLog notificationRawLog) throws Exception{
 		return em.merge(notificationRawLog);
 	}
 

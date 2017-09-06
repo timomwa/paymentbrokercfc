@@ -84,7 +84,7 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 				}else{
 					Calendar date = Calendar.getInstance();
 					long t= date.getTimeInMillis();
-					Date afterAddingTenMins=new Date(t + (10 * ONE_MINUTE_IN_MILLIS));
+					Date afterAddingTenMins=new Date(t + (10 * (payment.getRetrycount() + 1) * ONE_MINUTE_IN_MILLIS));
 					payment.setEarliestRetryTime(afterAddingTenMins);
 				}
 				

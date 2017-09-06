@@ -25,6 +25,7 @@ import ug.or.nda.dto.InvoiceValidationResponseDTO;
 import ug.or.nda.dto.QueryDTO;
 import ug.or.nda.entities.Invoice;
 import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.services.InvoiceServiceService;
 import ug.or.nda.services.ValidationService;
@@ -191,7 +192,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
         	
         	boolean paymentExists = paymentPushEJB.isInQueue(invoiceNo);
         	
-        	InvoiceValidationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(invoiceNo);
+        	PaymentNotificationRawLog rawlog =  paymentNotificationRawLogEJB.findLastRawLogByInvoiceNo(invoiceNo);
             String systemMsg = (rawlog!=null) ? rawlog.getSystemMsg() : "";
         	InvoiceValidationResponseDTO  validationReq =  invoiceValidatorReqConverter.convert(resp,paymentExists,systemMsg);
         	

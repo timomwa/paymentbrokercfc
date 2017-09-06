@@ -5,7 +5,7 @@ import java.util.List;
 import ug.or.nda.dto.PaymentNotificationDTO;
 import ug.or.nda.dto.PaymentNotificationRequestDTO;
 import ug.or.nda.entities.PaymentNotification;
-import ug.or.nda.entities.InvoiceValidationRawLog;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.ws.PaymentNotificationRequest;
 
@@ -15,7 +15,7 @@ public interface PaymentNotificatinConverterI {
 
 	public PaymentNotificationRequest convert(PaymentNotification payment) throws BrokerException;
 
-	public InvoiceValidationRawLog convertToRawLog(PaymentNotification notification);
+	public PaymentNotificationRawLog convertToRawLog(PaymentNotification notification);
 
 	public List<PaymentNotificationDTO> convert(List<PaymentNotification> paymentnotifs);
 	
