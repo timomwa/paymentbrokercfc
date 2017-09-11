@@ -54,7 +54,7 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 			} catch (MalformedURLException e1) {
 				e1.printStackTrace();
 			}
-		
+		logger.info( " --> wsdlLocation :: "+wsdlLocation  );
 			QName serviceName = new QName("http://wsp.nda.or.ug","paymentWebService");
 			
 			PaymentWebService_Service service1 = new PaymentWebService_Service(wsdlLocation,serviceName);
