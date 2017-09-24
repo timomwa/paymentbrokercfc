@@ -2,6 +2,8 @@ package ug.or.nda.ejb;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +33,8 @@ import ug.or.nda.wsp.PaymentWebService_Service;
 @Stateless
 public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	
-	static final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+	public static final long ONE_MINUTE_IN_MILLIS=60000;//millisecs
+	public static final DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
