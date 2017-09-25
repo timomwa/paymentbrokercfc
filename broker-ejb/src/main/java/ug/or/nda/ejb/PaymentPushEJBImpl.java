@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import ug.or.nda.constant.AppPropertyHolder;
 import ug.or.nda.constant.Status;
 import ug.or.nda.entities.PaymentNotification;
+import ug.or.nda.entities.PaymentNotificationRawLog;
 import ug.or.nda.exceptions.BrokerException;
 import ug.or.nda.ws.PaymentNotificationRequest;
 import ug.or.nda.ws.PaymentNotificationResponse;
@@ -68,11 +69,21 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	}
 	
 	public void pushPayment(PaymentNotification payment) throws BrokerException{
+		
+		PaymentNotificationRawLog paymentNotificationRawLog = new PaymentNotificationRawLog();
+		paymentNotificationRawLog.setInvoiceNo( payment.getInvoiceNo() );
+		paymentNotificationRawLog.setSourcehost( "localhost" );
+		paymentNotificationRawLog.setSystemID("AUTO-RETRY-BOT");
+		
 		try{
 			
 			PaymentNotificationRequest paymentNotif = paymentNotifConverterEJBI.convert(payment);
 			
 			PaymentNotificationResponse resp = paymentport.paymentNotification(paymentNotif);
+			
+			
+			String msg = resp.getStatusMessage();
+			Status status = Status.SUCCESS;
 			
 			if(resp.getStatusCode()==0){
 				
@@ -80,18 +91,36 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 				
 			}else{
 				
-				Status status = Status.FAILED_TEMPORARILY;
 				
-				if(payment.getRetrycount().compareTo( payment.getMaxretries()-1  )>=0){
-					status = Status.FAILED_PERMANENTLY;
+				if(msg.contains("A payment has already been made against this invoice")){
+					
+					msg = msg+ ", So we denote this as a success!";
+					status = Status.SUCCESS;
+					payment.setStatus(status);
+				
 				}else{
-					Calendar date = Calendar.getInstance();
-					long t= date.getTimeInMillis();
-					Date afterAddingTenMins=new Date(t + (10 * (payment.getRetrycount() + 1) * ONE_MINUTE_IN_MILLIS));
-					payment.setEarliestRetryTime(afterAddingTenMins);
+					
+					status = Status.FAILED_TEMPORARILY;
+				
 				}
 				
-				payment.setStatus(status);
+				if(payment.getRetrycount().compareTo( payment.getMaxretries()-1  )>=0 && status != Status.SUCCESS){
+					
+					status = Status.FAILED_PERMANENTLY;
+					payment.setStatus(status);
+					
+				}else{
+					
+					Calendar date = Calendar.getInstance();
+					long t= date.getTimeInMillis();
+					Date afterAddingTenMins=new Date(t + (10 *  ONE_MINUTE_IN_MILLIS));
+					payment.setEarliestRetryTime(afterAddingTenMins);
+					payment.setStatus(status);
+					
+				}
+				
+				
+				
 				
 			}
 			
@@ -99,6 +128,11 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 			payment = em.merge(payment);
 			
 			logger.info(resp);
+			
+			paymentNotificationRawLog.setSystemMsg( msg );
+			paymentNotificationRawLog.setStatus( status );
+			paymentNotificationRawLog.setPayload( payment.toString() );
+			paymentNotificationRawLog = em.merge(paymentNotificationRawLog);
 			
 		}catch(BrokerException be){
 			logger.error(be.getMessage(), be);
