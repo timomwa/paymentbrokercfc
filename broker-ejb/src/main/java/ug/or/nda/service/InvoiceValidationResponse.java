@@ -111,4 +111,19 @@ public class InvoiceValidationResponse {
         this.statusMessage = value;
     }
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("InvoiceValidationResponse [\n\tinvoice=");
+		builder.append(invoice);
+		builder.append(",\n\tstatusCode=");
+		builder.append(statusCode);
+		builder.append(",\n\tstatusMessage=");
+		builder.append(statusMessage);
+		builder.append("\n]");
+		return builder.toString();
+	}
+    
+    
+
 }

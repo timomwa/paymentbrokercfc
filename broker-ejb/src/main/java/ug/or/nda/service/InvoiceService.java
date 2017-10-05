@@ -31,8 +31,7 @@ public class InvoiceService  {
 	
 	
 	@EJB
-	private InvoiceServiceEJBI invoiceService;
-	
+	private InvoiceServiceEJBI invoiceService; 
 	
 	@WebMethod
 	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO invoiceValidationReq){

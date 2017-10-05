@@ -45,6 +45,9 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	@EJB
 	private PaymentNotificatinConverterI paymentNotifConverterEJBI;
 	
+	@EJB
+	private ConfigurationEJBI configurationEJB;
+	
 	private PaymentWebService paymentport;
 	
 	
@@ -52,7 +55,7 @@ public class PaymentPushEJBImpl implements PaymentPushEJBI {
 	public void init(){
 		try{
 			URL wsdlLocation = null;
-			String endpoint = AppPropertyHolder.BASE_WS_URL.concat("/ndamisws/invoice/payment/v1.0");
+			String endpoint = configurationEJB.getValue( AppPropertyHolder.BASE_WS_URL_CONFIG_KEY ).concat("/ndamisws/invoice/payment/v1.0");
 			try {
 				wsdlLocation = new URL(endpoint+"?wsdl");
 			} catch (MalformedURLException e1) {

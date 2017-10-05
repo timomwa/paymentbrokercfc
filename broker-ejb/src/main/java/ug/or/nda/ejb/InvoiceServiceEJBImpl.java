@@ -57,7 +57,9 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 	private PaymentNotificationRawLogEJBI paymentNotificationRawLogEJB;
 	
 	
-	
+	@EJB
+	private ConfigurationEJBI configurationEJB;
+		
 
 	@Override
 	public InvoiceValidationResponseDTO  validateInvoice(InvoiceValidationRequestDTO request, String ipAddress) throws BrokerException{
@@ -85,7 +87,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 				throw new BrokerException("Error: Forbidden (Caller not allowed. Kindly ask admin to whitelist you!)- "+ServiceMessageCodes.CALLER_NOT_ALLOWED);
 			
 			URL wsdlLocation = null;
-			String endpoint = AppPropertyHolder.BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
+			String endpoint =  configurationEJB.getValue( AppPropertyHolder.BASE_WS_URL_CONFIG_KEY ).concat("/ndamisws/invoice/validation/v1.0");
 			
 			try {
 				wsdlLocation = new URL(endpoint+"?wsdl");
@@ -165,7 +167,7 @@ public class InvoiceServiceEJBImpl implements InvoiceServiceEJBI {
 		InvoiceDTO invoiceDTO = null;
 		
 		URL wsdlLocation = null;
-		String endpoint = AppPropertyHolder.BASE_WS_URL.concat("/ndamisws/invoice/validation/v1.0");
+		String endpoint = configurationEJB.getValue( AppPropertyHolder.BASE_WS_URL_CONFIG_KEY ).concat("/ndamisws/invoice/validation/v1.0");
 		try {
 			wsdlLocation = new URL(endpoint+"?wsdl");
 		} catch (MalformedURLException e1) {
