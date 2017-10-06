@@ -219,5 +219,9 @@ public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAOI<T
 	public void lock(T entity, LockModeType type){
 		em.lock(entity, type);
 	}
+	
+	public void setEm(EntityManager em){
+		this.em = em;
+	}
 
 }

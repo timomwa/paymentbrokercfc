@@ -2,17 +2,21 @@ package ug.or.nda.ejb;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
 import ug.or.nda.constant.ServiceMessageCodes;
 import ug.or.nda.dao.ConfigurationDAOI;
+import ug.or.nda.dao.ConfigurationDAOImpl;
 import ug.or.nda.dto.Action;
 import ug.or.nda.dto.ConfigurationRequest;
-import ug.or.nda.dto.ConfigurationResponse;
+import ug.or.nda.dto.ConfigurationResponseDTO;
 import ug.or.nda.entities.Configuration;
 import ug.or.nda.exceptions.BrokerException;
 
@@ -21,8 +25,17 @@ public class ConfigurationEJBImpl implements ConfigurationEJBI {
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
+	@PersistenceContext//(unitName=AppPropertyHolder.PRIMARY_PERSISTENT_UNIT)
+	protected EntityManager em;
+	
 	@Inject
 	private ConfigurationDAOI configurationDAO;
+	
+	@PostConstruct
+	public void init(){
+		configurationDAO = new 	ConfigurationDAOImpl();
+		configurationDAO.setEm(em);
+	}
 	
 	@EJB
 	private IPWhitelistEJBI ipWhitelistEJB;
@@ -52,8 +65,8 @@ public class ConfigurationEJBImpl implements ConfigurationEJBI {
 	}
 
 	@Override
-	public ConfigurationResponse process(ConfigurationRequest req, String ipAddress) {
-		ConfigurationResponse response = new ConfigurationResponse();
+	public ConfigurationResponseDTO process(ConfigurationRequest req, String ipAddress) {
+		ConfigurationResponseDTO response = new ConfigurationResponseDTO();
 		boolean success = false;
 		String message = "Nothing to do";
 		try{
@@ -66,7 +79,7 @@ public class ConfigurationEJBImpl implements ConfigurationEJBI {
 		
 			Action action = req.getAction();
 			String configKey = req.getConfigKey();
-			String configValue = req.getConfigKey();
+			String configValue = req.getConfigValue();
 			
 			if((action==null || configKey==null || configValue==null) ||
 					(configKey.trim().isEmpty() || configValue.trim().isEmpty()) ){
@@ -109,7 +122,7 @@ public class ConfigurationEJBImpl implements ConfigurationEJBI {
 					
 					StringBuilder sb = new StringBuilder();
 					for(Configuration cfg :configs){
-						sb.append( sb.toString() ).append("\n");
+						sb.append( cfg.toString() ).append("\n");
 					}
 					
 					message = sb.toString();

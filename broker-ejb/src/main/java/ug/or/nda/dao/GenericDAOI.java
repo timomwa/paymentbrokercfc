@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 
 public interface GenericDAOI<T, ID extends Serializable> {
@@ -137,6 +138,9 @@ public interface GenericDAOI<T, ID extends Serializable> {
      * @param type - javax.persistence.LockModeType
      */
     public void lock(T entity, LockModeType type);
+    
+    
+    public void setEm(EntityManager em);
     
     
     

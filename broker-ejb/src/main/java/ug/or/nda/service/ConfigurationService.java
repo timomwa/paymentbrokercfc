@@ -13,19 +13,15 @@ import org.apache.log4j.Logger;
 import org.jboss.wsf.spi.annotation.WebContext;
 
 import ug.or.nda.dto.ConfigurationRequest;
-import ug.or.nda.dto.ConfigurationResponse;
+import ug.or.nda.dto.ConfigurationResponseDTO;
 import ug.or.nda.ejb.ConfigurationEJBI;
-import ug.or.nda.ejb.EncryptionEJBI;
 
-@WebService(name="ConfigurationService" , targetNamespace="http://services.nda.or.ug")
-@WebContext(contextRoot = "/broker", urlPattern="/security/webservice/configuration/v1.0")
+@WebService(name="Configs" , targetNamespace="http://services.nda.or.ug")
+@WebContext(contextRoot = "/broker", urlPattern="/config/v2.0")
 @Stateless
 public class ConfigurationService {
 	
 	private Logger logger = Logger.getLogger(getClass());
-
-	@EJB
-	private EncryptionEJBI encryptionEJB;
 	
 	
 	@EJB
@@ -36,7 +32,7 @@ public class ConfigurationService {
 	private WebServiceContext wsContext;
 	
 	@WebMethod
-	public ConfigurationResponse process(ConfigurationRequest req){
+	public ConfigurationResponseDTO processRequest(ConfigurationRequest req){
 		return configurationEJB.process(req, getIPAddress()  );
 	}
 	

@@ -20,7 +20,7 @@ import org.jasypt.hibernate3.type.EncryptedIntegerAsStringType;
 import org.jasypt.hibernate3.type.EncryptedStringType;
 
 @Entity
-@Table(name = "ip_whitelist")
+@Table(name = "configs")
 @TypeDefs({
 	@TypeDef(
 	    name="encryptedString", 

@@ -2,13 +2,13 @@ package ug.or.nda.dto;
 
 import java.io.Serializable;
 
-public class ConfigurationResponse implements Serializable {
+public class ConfigurationResponseDTO implements Serializable {
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8040283310694137136L;
-	
+	private static final long serialVersionUID = -308997045854203038L;
 	private Boolean success;
 	private String message;
 	public Boolean getSuccess() {

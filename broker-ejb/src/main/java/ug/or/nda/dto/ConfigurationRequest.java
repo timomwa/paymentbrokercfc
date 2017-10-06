@@ -4,15 +4,14 @@ import java.io.Serializable;
 
 public class ConfigurationRequest implements Serializable{
 	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8987515513428702957L;
-	
+	private static final long serialVersionUID = 6106260524994863568L;
 	private Action action;
 	private String configKey;
 	private String configValue;
-	private RequestHeaderDTO requestHeader;
 	
 	public Action getAction() {
 		return action;
@@ -33,12 +32,6 @@ public class ConfigurationRequest implements Serializable{
 		this.configValue = configValue;
 	}
 	
-	public RequestHeaderDTO getRequestHeader() {
-		return requestHeader;
-	}
-	public void setRequestHeader(RequestHeaderDTO requestHeader) {
-		this.requestHeader = requestHeader;
-	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -48,8 +41,6 @@ public class ConfigurationRequest implements Serializable{
 		builder.append(configKey);
 		builder.append(",\n\tconfigValue=");
 		builder.append(configValue);
-		builder.append(",\n\trequestHeader=");
-		builder.append(requestHeader);
 		builder.append("\n]");
 		return builder.toString();
 	}
